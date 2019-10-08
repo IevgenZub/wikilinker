@@ -58,7 +58,8 @@ namespace WikiLinker.Services
                         if (links.Count == 1)
                         {
                             var link = ((JArray)wikiResponse[3])[0].Value<string>();
-                            
+                            var description = ((JArray)wikiResponse[2])[0].Value<string>();
+
                             input = " " + input;
                             input = ReplaceWithLink(input, " ", text, "", link);
                             input = ReplaceWithLink(input, " ", text, " ", link);
@@ -78,7 +79,14 @@ namespace WikiLinker.Services
 
                             if (!string.IsNullOrEmpty(imageUrl))
                             {
-                                photos.Add(new { imageUrl = imageUrl, title = text, link = link, type = type });
+                                photos.Add(new 
+                                { 
+                                    imageUrl = imageUrl, 
+                                    title = text, 
+                                    link = link, 
+                                    type = type, 
+                                    description = description 
+                                });
                             }
                         }
                     }

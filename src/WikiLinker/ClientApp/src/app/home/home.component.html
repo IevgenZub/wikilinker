@@ -1,5 +1,4 @@
-<h1>Greatings!</h1>
-<p>Welcome to WikiLinker. Online tool for text based wiki search</p>
+<p>Welcome to <b>WikiLinker</b>. Online tool for text based wiki search</p>
 <form [formGroup]="articleForm" (ngSubmit)="onSubmit(articleForm.value)">
   <div class="row">
     <div class="col-12">
@@ -30,13 +29,14 @@
         <div class="col-12">
           <h5>{{ type.name }}</h5>
         </div>
-        <div class="col-md-3 col-12" *ngFor="let photo of type.photos">
+        <div class="col-md-4 col-12" *ngFor="let photo of type.photos">
           <a target="_blank" href="{{ photo.link }}">
             <figure>
-              <img style="width:15rem; height:10rem;" src="{{ photo.imageUrl }}" />
+              <img style="width:20rem; height:15rem;" src="{{ photo.imageUrl }}" />
               <figcaption>{{ photo.title }}</figcaption>
             </figure>
           </a>
+          <p>{{ photo.description }}</p>
         </div>
       </div>
     </div>
