@@ -20,6 +20,11 @@ export class HomeComponent {
     );
   }
 
+  reset() {
+    this.articleForm.reset();
+    this.wikiLinkedArticle = <Article>{};
+  }
+
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
