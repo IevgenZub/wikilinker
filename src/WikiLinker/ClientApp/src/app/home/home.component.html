@@ -1,0 +1,27 @@
+<h1>Greatings!</h1>
+<p>Welcome to WikiLinker. Online tool for text based wiki search</p>
+<form [formGroup]="articleForm" (ngSubmit)="onSubmit(articleForm.value)">
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <label for="description">Search request</label>
+        <textarea id="description" rows="10" formControlName="text" class="form-control" placeholder="Put your text here..."></textarea>
+      </div>
+      <div class="form-group float-right">
+        <button class="btn btn-secondary" (click)="reset()">
+          Reset
+        </button>
+        &nbsp;
+        <button type="submit" [disabled]="!articleForm.valid" class="btn btn-primary">
+          Submit
+        </button>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label for="description">Result</label>
+        <div [innerHTML]="wikiLinkedArticle.text" style="height:250px;overflow-y: scroll; border:1px solid lightgray; padding:10px;"></div>
+      </div>
+    </div>
+  </div>
+</form>
