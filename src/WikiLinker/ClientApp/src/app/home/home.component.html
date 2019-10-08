@@ -2,10 +2,11 @@
 <p>Welcome to WikiLinker. Online tool for text based wiki search</p>
 <form [formGroup]="articleForm" (ngSubmit)="onSubmit(articleForm.value)">
   <div class="row">
-    <div class="col-6">
+    <div class="col-12">
       <div class="form-group">
         <label for="description">Search request</label>
-        <textarea id="description" rows="10" formControlName="text" class="form-control" placeholder="Put your text here..."></textarea>
+        <textarea id="description" rows="5" formControlName="text" class="form-control" placeholder="Put your text here...">
+        </textarea>
       </div>
       <div class="form-group float-right">
         <button class="btn btn-secondary" (click)="reset()">
@@ -17,10 +18,26 @@
         </button>
       </div>
     </div>
-    <div class="col-6">
-      <div class="form-group">
-        <label for="description">Result</label>
-        <div [innerHTML]="wikiLinkedArticle.text" style="height:250px;overflow-y: scroll; border:1px solid lightgray; padding:10px;"></div>
+    <div class="col-12">
+      <div [hidden]=!wikiLinkedArticle.text class="form-group">
+        <h2>Result</h2>
+        <div [innerHTML]="wikiLinkedArticle.text"></div>
+      </div>
+    </div>
+    <div [hidden]=!wikiLinkedArticle.text class="col-12">
+      <h2>{{ photos.length }} Wiki articles</h2>
+      <div class="row" *ngFor="let type of entityTypes">
+        <div class="col-12">
+          <h5>{{ type.name }}</h5>
+        </div>
+        <div class="col-md-3 col-12" *ngFor="let photo of type.photos">
+          <a target="_blank" href="{{ photo.link }}">
+            <figure>
+              <img style="width:15rem; height:10rem;" src="{{ photo.imageUrl }}" />
+              <figcaption>{{ photo.title }}</figcaption>
+            </figure>
+          </a>
+        </div>
       </div>
     </div>
   </div>
