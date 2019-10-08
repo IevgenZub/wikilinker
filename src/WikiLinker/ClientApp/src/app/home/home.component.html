@@ -30,6 +30,9 @@
           <h5>{{ type.name }}</h5>
         </div>
         <div class="col-md-4 col-12" *ngFor="let photo of type.photos">
+          <button class="btn btn-secondary"><b>+</b>Add</button>
+          <br />
+          <br />
           <a target="_blank" href="{{ photo.link }}">
             <figure>
               <img style="width:20rem; height:15rem;" src="{{ photo.imageUrl }}" />
