@@ -19,21 +19,23 @@ namespace WikiLinker.Services
 
         public async Task<string> FindLinksAndImages(string input)
         {
-            var entitiesResponse = await _client.EntitiesAsync(input, "en");
-            var keyPhrasesResponse = await _client.KeyPhrasesAsync(input, "en");
             var words = new SortedSet<string>();
+            var photos = new HashSet<dynamic>();
+            var language = await _client.DetectLanguageAsync(input);
+            
 
+            var entitiesResponse = await _client.EntitiesAsync(input, language.DetectedLanguages[0].Iso6391Name);
             foreach (var entity in entitiesResponse.Entities)
             {
-                words.Add($"{entity.Name}_{entity.Type.Replace("DateTime", "Date")}");
+                words.Add($"{entity.Name}_{entity.Type}");
             }
 
+            var keyPhrasesResponse = await _client.KeyPhrasesAsync(input, language.DetectedLanguages[0].Iso6391Name);
             foreach (var keyPhrase in keyPhrasesResponse.KeyPhrases)
             {
                 words.Add($"{keyPhrase}_Phrase");
             }
 
-            var photos = new HashSet<dynamic>();
             foreach (var word in words)
             {
                 var text = word.Split('_')[0];
