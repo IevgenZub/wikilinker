@@ -19,12 +19,12 @@
     </div>
     <div class="col-12">
       <div [hidden]=!wikiLinkedArticle.text class="form-group">
-        <h2>Result</h2>
+        <h5>Wiki search result</h5>
         <div [innerHTML]="wikiLinkedArticle.text"></div>
       </div>
     </div>
     <div [hidden]=!wikiLinkedArticle.text class="col-12">
-      <h2>{{ photos.length }} Wiki articles</h2>
+      <h5>{{ photos.length }} Wiki articles</h5>
       <div class="row" *ngFor="let type of entityTypes">
         <div class="col-12">
           <h5>{{ type.name }}</h5>
