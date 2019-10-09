@@ -21,6 +21,7 @@ namespace WikiLinker.Services
         {
             var words = new SortedDictionary<string, string>();
             var photos = new HashSet<dynamic>();
+            var links = new HashSet<dynamic>();
             var language = await _client.DetectLanguageAsync(input);
             var languageIso = language.DetectedLanguages[0].Iso6391Name;
             
@@ -54,68 +55,34 @@ namespace WikiLinker.Services
                     "namespace=0&" +
                     "format=json");
 
-                if (!string.IsNullOrEmpty(wikiResponseRaw))
+
+                var wikiResponse = (JArray)JsonConvert.DeserializeObject(wikiResponseRaw);
+                var url = wikiResponse.SelectToken("$[3].[0]")?.Value<string>();
+                var description = wikiResponse.SelectToken("$[2].[0]")?.Value<string>();
+
+                if (!string.IsNullOrEmpty(url))
                 {
-                    var wikiResponse = (JArray)JsonConvert.DeserializeObject(wikiResponseRaw);
-                    var link = wikiResponse.SelectToken("$[3].[0]")?.Value<string>();
-                    var description = wikiResponse.SelectToken("$[2].[0]")?.Value<string>();
+                    links.Add(new { text = text, url = url, type = type, description = description });
 
-                    if (!string.IsNullOrEmpty(link))
-                    {
-                        var delimiters = new List<KeyValuePair<string, string>>
-                        {
-                            new KeyValuePair<string, string>(" ", ""),
-                            new KeyValuePair<string, string>(" ", " "),
-                            new KeyValuePair<string, string>(" ", "."),
-                            new KeyValuePair<string, string>(". ", " "),
-                            new KeyValuePair<string, string>(", ", " "),
-                            new KeyValuePair<string, string>(" ", ", "),
-                        };
+                    var wikiImageResponse = await httpClient.GetStringAsync(
+                        $"{WikiSearchEndpoint}?action=query&" +
+                         "prop=pageimages&" +
+                         "formatversion=2&" +
+                         "format=json&" +
+                         "piprop=original&" +
+                        $"titles={text}");
 
-                        input = ReplaceWithLink(input, text, link, delimiters);
-                        await GetWikiImage(httpClient, photos, text, link, description, type);
-                    }
+                   var imageUrl = ((JObject)JsonConvert.DeserializeObject(wikiImageResponse))
+                        .SelectToken("$.query.pages[0].original.source")?.Value<string>();
+
+                   if (!string.IsNullOrEmpty(imageUrl))
+                   {
+                        photos.Add(new { imageUrl = imageUrl, title = text, url = url, type = type, description = description }); 
+                   }
                 }
             }
 
-            return JsonConvert.SerializeObject(new { input = input, photos = photos });
-        }
-
-        private static async Task GetWikiImage(HttpClient httpClient, HashSet<dynamic> photos, 
-            string text, string link, string description, string type)
-        {
-            var wikiImageResponse = await httpClient.GetStringAsync(
-               $"{WikiSearchEndpoint}?action=query&" +
-                "prop=pageimages&" +
-                "formatversion=2&" +
-                "format=json&" +
-                "piprop=original&" +
-               $"titles={text}");
-
-            var imageUrl = ((JObject)JsonConvert.DeserializeObject(wikiImageResponse))
-                .SelectToken("$.query.pages[0].original.source")?.Value<string>();
-
-            if (!string.IsNullOrEmpty(imageUrl))
-            {
-                photos.Add(new
-                {
-                    imageUrl = imageUrl, title = text, link = link, type = type, description = description
-                });
-            }
-        }
-
-        private static string ReplaceWithLink(string input, string text, string link, 
-            List<KeyValuePair<string, string>> delimiters)
-        {
-            input = " " + input;
-            foreach (var delimiter in delimiters)
-            {
-                input = input.Replace(
-                    $"{delimiter.Key}{text}{delimiter.Value}",
-                    $"<a target='_blank' href='{link}'>{delimiter.Key}{text}{delimiter.Value}</a>");
-            }
-
-            return input;
+            return JsonConvert.SerializeObject(new { links = links, photos = photos });
         }
     }
 }
