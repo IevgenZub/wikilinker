@@ -19,7 +19,8 @@
     <div class="col-12">
       <div [hidden]=!wikiLinkedArticle.text class="form-group">
         <label><b>Wiki search result</b></label>
-        <div [innerHTML]="wikiLinkedArticle.text"></div>
+        
+        <div class="jumbotron" [innerHTML]="wikiLinkedArticle.text"></div>
       </div>
     </div>
     <div [hidden]=!wikiLinkedArticle.text class="col-12">
