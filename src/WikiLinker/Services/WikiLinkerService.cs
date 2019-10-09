@@ -27,8 +27,9 @@ namespace WikiLinker.Services
             var languageIso = language.DetectedLanguages[0].Iso6391Name;
             
             var entitiesResponse = await _client.EntitiesAsync(input, languageIso);
-            foreach (var entity in entitiesResponse.Entities)
+            foreach (var entity in entitiesResponse.Entities.Where(e => e.Type != "Quantity"))
             {
+
                 if (!words.ContainsKey(entity.Name))
                 {
                     words[entity.Name] = entity.Type.ToUpper();
@@ -63,8 +64,7 @@ namespace WikiLinker.Services
 
                 if (!string.IsNullOrEmpty(url))
                 {
-                    links.Add(new { text = text, url = url, type = type, description = description });
-
+                    
                     var wikiImageResponse = await httpClient.GetStringAsync(
                         $"{WikiSearchEndpoint}?action=query&" +
                          "prop=pageimages&" +
@@ -76,18 +76,19 @@ namespace WikiLinker.Services
                    var imageUrl = ((JObject)JsonConvert.DeserializeObject(wikiImageResponse))
                         .SelectToken("$.query.pages[0].original.source")?.Value<string>();
 
-                   if (!string.IsNullOrEmpty(imageUrl))
-                   {
-                        photos.Add(new { imageUrl = imageUrl, title = text, url = url, type = type, description = description }); 
-                   }
+                    if (string.IsNullOrEmpty(imageUrl))
+                    {
+                        imageUrl = "http://municipalmagazine.com/wp-content/uploads/2017/04/jayankondam-wiki.png";
+                    }
+
+                    links.Add(new { text = text, url = url, type = type, description = description, imageUrl = imageUrl });
                 }
             }
 
             return JsonConvert.SerializeObject(new 
             { 
                 words = words.Select(w => new { text = w.Key, type = w.Value }), 
-                links = links, 
-                photos = photos 
+                links = links 
             });
         }
     }

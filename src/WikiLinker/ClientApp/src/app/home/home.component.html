@@ -40,7 +40,7 @@
       <div class="card">
         <div class="card-header">
           Search results
-          <button [hidden]=!wikiLinkedArticle.text class="btn btn-sm btn-primary float-right" (click)="reset()">New Search</button>
+          <button [hidden]=!wikiLinkedArticle.text class="btn btn-primary float-right" (click)="reset()">New Search</button>
         </div>
         <div class="card-body">
           <blockquote class="blockquote mb-0">
@@ -55,23 +55,23 @@
 <!-- Photos -->
 <div [hidden]=!wikiLinkedArticle.text class="row">
   <div class="col-12">
-    <h4>{{ photos.length }} Wiki articles</h4>
+    <h4>{{ links.length }} Wiki articles</h4>
   </div>
   <div class="col-12">
-    <div class="row" *ngFor="let type of entityTypes">
+    <div class="row" *ngFor="let type of linkTypes">
       <div class="col-12">
         {{ type.name }}
       </div>
-      <div class="col-12 col-md-6" *ngFor="let photo of type.photos">
+      <div class="col-12 col-md-6" *ngFor="let link of type.links">
         <div class="row">
           <div class="col-12 col-md-5">
-            <a target="_blank" href="{{ photo.url }}">
-              <img style="width:14rem; height:10rem;" src="{{ photo.imageUrl }}" />
+            <a target="_blank" href="{{ link.url }}">
+              <img style="width:14rem; height:10rem;" src="{{ link.imageUrl }}" alt="Smiley face" />
             </a>
           </div>
           <div class="col-12 col-md-7">
-            <a target="_blank" href="{{ photo.url }}">{{ photo.title }}</a>
-            <p>{{ photo.description.slice(0, 250) }}</p>
+            <a target="_blank" href="{{ link.url }}">{{ link.text }}</a>
+            <p>{{ link.description.slice(0, 250) }}</p>
           </div>
         </div>
       </div>

@@ -10,9 +10,8 @@ export class HomeComponent {
   searchStarted = false;
   article = <Article>{};
   wikiLinkedArticle = <Article>{};
-  entityTypes = [];
-  photos = [];
   links = [];
+  linkTypes = [];
   words = [];
   wordTypes = [];
   articleForm = this.formBuilder.group({
@@ -42,16 +41,8 @@ export class HomeComponent {
     private baseUrl: string) { }
 
   private displaySearchResult(result, articleData) {
-    this.entityTypes = [];
     this.wordTypes = [];
-
-    this.photos = (<any>result).photos;
-    for (let photo of this.photos) {
-      let typeName = photo.type;
-      if (this.entityTypes.filter(e => e.name == typeName).length == 0) {
-        this.entityTypes.push({ name: typeName, photos: this.photos.filter(p => p.type == typeName) });
-      }
-    }
+    this.linkTypes = [];
 
     this.words = (<any>result).words;
     for (let word of this.words) {
@@ -79,6 +70,11 @@ export class HomeComponent {
         case "PHRASE":
           cssClass = "text-info";
           break;
+      }
+
+      let typeName = link.type;
+      if (this.linkTypes.filter(l => l.name == typeName).length == 0) {
+        this.linkTypes.push({ name: typeName, links: this.links.filter(l => l.type == typeName) });
       }
 
       for (let delimiter of delimiters) {
