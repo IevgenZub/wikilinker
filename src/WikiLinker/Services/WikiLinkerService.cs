@@ -20,16 +20,16 @@ namespace WikiLinker.Services
 
         public async Task<string> FindLinksAndImages(string input)
         {
-            var words = new SortedDictionary<string, string>();
             var photos = new List<dynamic>();
             var links = new List<dynamic>();
+            var words = new SortedDictionary<string, string>();
+
             var language = await _client.DetectLanguageAsync(input);
             var languageIso = language.DetectedLanguages[0].Iso6391Name;
-            
+
             var entitiesResponse = await _client.EntitiesAsync(input, languageIso);
             foreach (var entity in entitiesResponse.Entities.Where(e => e.Type != "Quantity"))
             {
-
                 if (!words.ContainsKey(entity.Name))
                 {
                     words[entity.Name] = entity.Type.ToUpper();
@@ -57,14 +57,12 @@ namespace WikiLinker.Services
                     "namespace=0&" +
                     "format=json");
 
-
                 var wikiResponse = (JArray)JsonConvert.DeserializeObject(wikiResponseRaw);
                 var url = wikiResponse.SelectToken("$[3].[0]")?.Value<string>();
                 var description = wikiResponse.SelectToken("$[2].[0]")?.Value<string>();
 
                 if (!string.IsNullOrEmpty(url))
-                {
-                    
+                {                    
                     var wikiImageResponse = await httpClient.GetStringAsync(
                         $"{WikiSearchEndpoint}?action=query&" +
                          "prop=pageimages&" +
