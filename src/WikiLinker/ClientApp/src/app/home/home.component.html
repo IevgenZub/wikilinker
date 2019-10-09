@@ -3,7 +3,8 @@
   <div class="row">
     <div class="col-12">
       <div class="form-group">
-        <textarea id="description" rows="3" formControlName="text" class="form-control" placeholder="Enter text you want to search in Wiki...">
+        <textarea id="description" rows="3" formControlName="text" class="form-control"
+                  placeholder="Enter text you want to search in Wiki...">
         </textarea>
       </div>
       <div class="form-group float-right">
@@ -16,33 +17,56 @@
         </button>
       </div>
     </div>
-    <div class="col-12">
-      <div [hidden]=!wikiLinkedArticle.text class="form-group">
-        <label><b>Wiki search result</b></label>
-        
-        <div class="jumbotron" [innerHTML]="wikiLinkedArticle.text"></div>
-      </div>
+  </div>
+</form>
+<div [hidden]="!searchStarted" class="row">
+  <div class="col-12">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
-    <div [hidden]=!wikiLinkedArticle.text class="col-12">
-      <label><b>{{ photos.length }} Wiki articles</b></label>
-      <div class="row" *ngFor="let type of entityTypes">
-        <div class="col-12">
-          {{ type.name }}
-        </div>
-        <div class="col-12 col-md-6" *ngFor="let photo of type.photos">
-          <div class="row">
-            <div class="col-12 col-md-5">
-              <a target="_blank" href="{{ photo.url }}">                
-                <img style="width:14rem; height:10rem;" src="{{ photo.imageUrl }}" />
-              </a>
-            </div>
-            <div class="col-12 col-md-7">
-              <a target="_blank" href="{{ photo.url }}">{{ photo.title }}</a>
-              <p style="padding-bottom:10px">{{ photo.description.slice(0, 250) }}</p>
-            </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div [hidden]=!wikiLinkedArticle.text class="form-group">
+      <label><b>Wiki search result</b></label>
+      <div class="jumbotron" [innerHTML]="wikiLinkedArticle.text"></div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div [hidden]=!wikiLinkedArticle.text class="col-12">
+    <label><b>{{ photos.length }} Wiki articles</b></label>
+    <div class="row" *ngFor="let type of entityTypes">
+      <div class="col-12">
+        {{ type.name }}
+      </div>
+      <div class="col-12 col-md-6" *ngFor="let photo of type.photos">
+        <div class="row">
+          <div class="col-12 col-md-5">
+            <a target="_blank" href="{{ photo.url }}">
+              <img style="width:14rem; height:10rem;" src="{{ photo.imageUrl }}" />
+            </a>
+          </div>
+          <div class="col-12 col-md-7">
+            <a target="_blank" href="{{ photo.url }}">{{ photo.title }}</a>
+            <p>{{ photo.description.slice(0, 250) }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-</form>
+</div>
+<div [hidden]=!wikiLinkedArticle.text class="row">
+  <div class="col-12">
+    <p><b>{{ words.length }} Entities and phrases detected </b></p>
+  </div>
+  <div class="col-3" *ngFor="let type of wordTypes">
+    {{ type.name }}
+    <ul>
+      <li *ngFor="let word of type.words">
+        {{ word.text }}
+      </li>
+    </ul>
+  </div>
+</div>

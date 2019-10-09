@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -20,8 +21,8 @@ namespace WikiLinker.Services
         public async Task<string> FindLinksAndImages(string input)
         {
             var words = new SortedDictionary<string, string>();
-            var photos = new HashSet<dynamic>();
-            var links = new HashSet<dynamic>();
+            var photos = new List<dynamic>();
+            var links = new List<dynamic>();
             var language = await _client.DetectLanguageAsync(input);
             var languageIso = language.DetectedLanguages[0].Iso6391Name;
             
@@ -82,7 +83,12 @@ namespace WikiLinker.Services
                 }
             }
 
-            return JsonConvert.SerializeObject(new { links = links, photos = photos });
+            return JsonConvert.SerializeObject(new 
+            { 
+                words = words.Select(w => new { text = w.Key, type = w.Value }), 
+                links = links, 
+                photos = photos 
+            });
         }
     }
 }

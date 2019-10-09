@@ -7,16 +7,21 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
+  searchStarted = false;
   article = <Article>{};
   wikiLinkedArticle = <Article>{};
   entityTypes = [];
   photos = [];
   links = [];
+  words = [];
+  wordTypes = [];
   articleForm = this.formBuilder.group({
     text: new FormControl(this.article.text, [Validators.required, Validators.minLength(3)])
   });
 
   onSubmit(articleData) {
+    this.searchStarted = true;
+    this.wikiLinkedArticle = <Article>{};
     this.http.post(this.baseUrl + 'api/articles', articleData).subscribe(
       result => this.displaySearchResult(result, articleData),
       error => console.error(error)
@@ -37,11 +42,19 @@ export class HomeComponent {
   private displaySearchResult(result, articleData) {
     this.photos = (<any>result).photos;
     this.entityTypes = [];
-    for (let i = 0; i < this.photos.length; i++) {
-      let typeName = this.photos[i].type;
-      let type = { name: typeName, photos: this.photos.filter(p => p.type == typeName) };
+    this.wordTypes = [];
+    for (let photo of this.photos) {
+      let typeName = photo.type;
       if (this.entityTypes.filter(e => e.name == typeName).length == 0) {
-        this.entityTypes.push(type);
+        this.entityTypes.push({ name: typeName, photos: this.photos.filter(p => p.type == typeName) });
+      }
+    }
+
+    this.words = (<any>result).words;
+    for (let word of this.words) {
+      let typeName = word.type;
+      if (this.wordTypes.filter(w => w.name == typeName).length == 0) {
+        this.wordTypes.push({ name: typeName, words: this.words.filter(w => w.type == typeName) });
       }
     }
 
@@ -74,6 +87,7 @@ export class HomeComponent {
     }
 
     this.wikiLinkedArticle.text = linkedText;
+    this.searchStarted = false;
   }
 }
 
