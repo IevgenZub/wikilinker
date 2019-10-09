@@ -30,7 +30,6 @@
           <label>{{ type.name }}</label>
         </div>
         <div class="col-md-4 col-12" *ngFor="let photo of type.photos">
-          <p><button class="btn btn-secondary btn-sm"><b>+</b>Add</button></p>
           <a target="_blank" href="{{ photo.url }}">
             <figure>
               <img style="width:20rem; height:15rem;" src="{{ photo.imageUrl }}" />

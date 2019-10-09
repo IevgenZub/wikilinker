@@ -46,7 +46,7 @@ export class HomeComponent {
     }
 
     this.links = (<any>result).links;
-    let delimiters = [["", " "], [" ", " "], [" ", ""], [". ", " "], [", ", " "], [" ", "."], [" ", ", "]];
+    let delimiters = [[" ", " "], [" ", ""], [". ", " "], [", ", " "], [" ", "."], [" ", ", "]];
     let linkedText = " " + articleData.text;
     for (let link of this.links) {
       let cssClass = "text-primary";
