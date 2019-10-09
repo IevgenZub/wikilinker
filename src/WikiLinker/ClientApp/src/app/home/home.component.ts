@@ -40,9 +40,10 @@ export class HomeComponent {
     private baseUrl: string) { }
 
   private displaySearchResult(result, articleData) {
-    this.photos = (<any>result).photos;
     this.entityTypes = [];
     this.wordTypes = [];
+
+    this.photos = (<any>result).photos;
     for (let photo of this.photos) {
       let typeName = photo.type;
       if (this.entityTypes.filter(e => e.name == typeName).length == 0) {

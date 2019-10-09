@@ -1,7 +1,12 @@
-<p>Welcome to <b>WikiLinker</b>. Online tool for text based wiki search</p>
-<form [formGroup]="articleForm" (ngSubmit)="onSubmit(articleForm.value)">
-  <div class="row">
-    <div class="col-12">
+<!--Header-->
+<div class="row">
+  <div class="col-12">
+    <h5>Welcome to <b>WikiLinker</b>! Online tool for text based wiki search </h5>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <form [formGroup]="articleForm" (ngSubmit)="onSubmit(articleForm.value)">
       <div class="form-group">
         <textarea id="description" rows="3" formControlName="text" class="form-control"
                   placeholder="Enter text you want to search in Wiki...">
@@ -16,28 +21,33 @@
           Submit
         </button>
       </div>
-    </div>
+    </form>
   </div>
-</form>
+</div>
+<!-- Progress bar -->
 <div [hidden]="!searchStarted" class="row">
   <div class="col-12">
     <div class="spinner-border" role="status">
       <span class="sr-only">Loading...</span>
     </div>
-    &nbsp;<b>Wikilinker</b> is working on your request..
+    &nbsp;<b>Wikilinker</b> is working on your request...
   </div>
 </div>
-<div class="row">
+<!-- Wiki search result -->
+<div [hidden]=!wikiLinkedArticle.text class="row">
   <div class="col-12">
-    <div [hidden]=!wikiLinkedArticle.text class="form-group">
-      <label><b>Wiki search result</b></label>
+    <div class="form-group">
+      <h6>Wiki search result</h6>
       <div class="jumbotron" [innerHTML]="wikiLinkedArticle.text"></div>
     </div>
   </div>
 </div>
-<div class="row">
-  <div [hidden]=!wikiLinkedArticle.text class="col-12">
-    <label><b>{{ photos.length }} Wiki articles</b></label>
+<!-- Photos -->
+<div [hidden]=!wikiLinkedArticle.text class="row">
+  <div class="col-12">
+    <h6>{{ photos.length }} Wiki articles</h6>
+  </div>
+  <div class="col-12">
     <div class="row" *ngFor="let type of entityTypes">
       <div class="col-12">
         {{ type.name }}
@@ -58,11 +68,13 @@
     </div>
   </div>
 </div>
+<br />
+<!-- Words -->
 <div [hidden]=!wikiLinkedArticle.text class="row">
   <div class="col-12">
-    <p><b>{{ words.length }} Entities and phrases detected </b></p>
+    <h6>{{ words.length }} Entities and phrases detected </h6>
   </div>
-  <div class="col-3" *ngFor="let type of wordTypes">
+  <div class="col-6 col-md-4" *ngFor="let type of wordTypes">
     {{ type.name }}
     <ul>
       <li *ngFor="let word of type.words">
