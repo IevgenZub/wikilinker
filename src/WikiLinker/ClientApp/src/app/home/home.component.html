@@ -26,20 +26,20 @@
       <label><b>{{ photos.length }} Wiki articles</b></label>
       <div class="row" *ngFor="let type of entityTypes">
         <div class="col-12">
-          <label>{{ type.name }}</label>
+          <p>{{ type.name }}</p>
         </div>
-        <div class="col-6" *ngFor="let photo of type.photos">
+        <div class="col-12 col-md-6" *ngFor="let photo of type.photos">
           <div class="row">
-            <div class="col-5">
-              <a target="_blank" href="{{ photo.url }}">
-                <figure>
-                  <img style="width:13rem; height:10rem;" src="{{ photo.imageUrl }}" />
-                  <figcaption>{{ photo.title }}</figcaption>
-                </figure>
+            <div class="col-12 col-md-5">
+              <a target="_blank" href="{{ photo.url }}">                
+                <img style="width:14rem; height:10rem;" src="{{ photo.imageUrl }}" />
               </a>
             </div>
-            <div class="col-7">
-              {{ photo.description.slice(0, 250) }}
+            <div class="col-12 col-md-7">
+              <a target="_blank" href="{{ photo.url }}">{{ photo.title }}</a>
+              <p>{{ photo.description.slice(0, 250) }}</p>
+              <br />
+              <br />
             </div>
           </div>
         </div>
