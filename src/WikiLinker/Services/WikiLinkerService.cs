@@ -30,7 +30,7 @@ namespace WikiLinker.Services
             {
                 if (!words.ContainsKey(entity.Name))
                 {
-                    words[entity.Name] = entity.Type;
+                    words[entity.Name] = entity.Type.ToUpper();
                 }
             }
 
@@ -39,7 +39,7 @@ namespace WikiLinker.Services
             {
                 if (!words.ContainsKey(keyPhrase))
                 {
-                    words[keyPhrase] = "Phrase";
+                    words[keyPhrase] = "PHRASE";
                 }
             }
 
@@ -82,7 +82,8 @@ namespace WikiLinker.Services
             return JsonConvert.SerializeObject(new { input = input, photos = photos });
         }
 
-        private static async Task GetWikiImage(HttpClient httpClient, HashSet<dynamic> photos, string text, string link, string description, string type)
+        private static async Task GetWikiImage(HttpClient httpClient, HashSet<dynamic> photos, 
+            string text, string link, string description, string type)
         {
             var wikiImageResponse = await httpClient.GetStringAsync(
                $"{WikiSearchEndpoint}?action=query&" +
@@ -104,7 +105,8 @@ namespace WikiLinker.Services
             }
         }
 
-        private static string ReplaceWithLink(string input, string text, string link, List<KeyValuePair<string, string>> delimiters)
+        private static string ReplaceWithLink(string input, string text, string link, 
+            List<KeyValuePair<string, string>> delimiters)
         {
             input = " " + input;
             foreach (var delimiter in delimiters)

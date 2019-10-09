@@ -19,20 +19,18 @@
     </div>
     <div class="col-12">
       <div [hidden]=!wikiLinkedArticle.text class="form-group">
-        <h5>Wiki search result</h5>
+        <label><b>Wiki search result</b></label>
         <div [innerHTML]="wikiLinkedArticle.text"></div>
       </div>
     </div>
     <div [hidden]=!wikiLinkedArticle.text class="col-12">
-      <h5>{{ photos.length }} Wiki articles</h5>
+      <label><b>{{ photos.length }} Wiki articles</b></label>
       <div class="row" *ngFor="let type of entityTypes">
         <div class="col-12">
-          <h5>{{ type.name }}</h5>
+          <label>{{ type.name }}</label>
         </div>
         <div class="col-md-4 col-12" *ngFor="let photo of type.photos">
-          <button class="btn btn-secondary btn-sm"><b>+</b>Add</button>
-          <br />
-          <br />
+          <p><button class="btn btn-secondary btn-sm"><b>+</b>Add</button></p>
           <a target="_blank" href="{{ photo.link }}">
             <figure>
               <img style="width:20rem; height:15rem;" src="{{ photo.imageUrl }}" />
