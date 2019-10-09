@@ -29,8 +29,10 @@ export class HomeComponent {
   }
 
   reset() {
-    this.articleForm.reset();
-    this.wikiLinkedArticle = <Article>{};
+    if (!this.searchStarted) {
+      this.articleForm.reset();
+      this.wikiLinkedArticle = <Article>{};
+    }
   }
 
   constructor(
@@ -60,8 +62,8 @@ export class HomeComponent {
     }
 
     this.links = (<any>result).links;
-    let delimiters = [[" ", " "], [" ", ""], [". ", " "], [", ", " "], [" ", "."], [" ", ", "]];
-    let linkedText = " " + articleData.text;
+    let delimiters = [[" ", " "], [". ", " "], [", ", " "], [" ", "."], [" ", ", "]];
+    let linkedText = " " + articleData.text + " ";
     for (let link of this.links) {
       let cssClass = "text-primary";
       switch (link.type) {

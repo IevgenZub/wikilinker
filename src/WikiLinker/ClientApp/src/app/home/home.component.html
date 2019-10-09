@@ -1,10 +1,10 @@
 <!--Header-->
 <div class="row">
   <div class="col-12">
-    <h5>Welcome to <b>WikiLinker</b>! Online tool for text based wiki search </h5>
+    <h3>Welcome to <b>WikiLinker</b>! <small>Online tool for text based wiki search </small></h3>
   </div>
 </div>
-<div class="row">
+<div [hidden]=wikiLinkedArticle.text class="row">
   <div class="col-12">
     <form [formGroup]="articleForm" (ngSubmit)="onSubmit(articleForm.value)">
       <div class="form-group">
@@ -13,11 +13,11 @@
         </textarea>
       </div>
       <div class="form-group float-right">
-        <button class="btn btn-secondary" (click)="reset()">
+        <button id="button-reset" type="button" [disabled]="searchStarted" class="btn btn-secondary" (click)="reset()">
           Reset
         </button>
         &nbsp;
-        <button type="submit" [disabled]="!articleForm.valid" class="btn btn-primary">
+        <button id="button-submit" type="submit" [disabled]="!articleForm.valid" class="btn btn-primary">
           Submit
         </button>
       </div>
@@ -30,22 +30,32 @@
     <div class="spinner-border" role="status">
       <span class="sr-only">Loading...</span>
     </div>
-    &nbsp;<b>Wikilinker</b> is working on your request...
+    &nbsp;<b>WikiLinker</b> is working on your request...
   </div>
 </div>
 <!-- Wiki search result -->
 <div [hidden]=!wikiLinkedArticle.text class="row">
   <div class="col-12">
     <div class="form-group">
-      <h6>Wiki search result</h6>
-      <div class="jumbotron" [innerHTML]="wikiLinkedArticle.text"></div>
+      <div class="card">
+        <div class="card-header">
+          Search results
+          <button [hidden]=!wikiLinkedArticle.text class="btn btn-sm btn-primary float-right" (click)="reset()">New Search</button>
+        </div>
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <div [innerHTML]="wikiLinkedArticle.text"></div>
+            <footer class="blockquote-footer">Highlighted with links from <cite title="Source Title">Wikipedia</cite></footer>
+          </blockquote>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 <!-- Photos -->
 <div [hidden]=!wikiLinkedArticle.text class="row">
   <div class="col-12">
-    <h6>{{ photos.length }} Wiki articles</h6>
+    <h4>{{ photos.length }} Wiki articles</h4>
   </div>
   <div class="col-12">
     <div class="row" *ngFor="let type of entityTypes">
@@ -72,7 +82,7 @@
 <!-- Words -->
 <div [hidden]=!wikiLinkedArticle.text class="row">
   <div class="col-12">
-    <h6>{{ words.length }} Entities and phrases detected </h6>
+    <h4>{{ words.length }} Entities and phrases detected </h4>
   </div>
   <div class="col-6 col-md-4" *ngFor="let type of wordTypes">
     {{ type.name }}
