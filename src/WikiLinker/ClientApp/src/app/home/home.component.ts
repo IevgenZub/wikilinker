@@ -36,6 +36,7 @@ export class HomeComponent {
 
   private displaySearchResult(result, articleData) {
     this.photos = (<any>result).photos;
+    this.entityTypes = [];
     for (let i = 0; i < this.photos.length; i++) {
       let typeName = this.photos[i].type;
       let type = { name: typeName, photos: this.photos.filter(p => p.type == typeName) };
