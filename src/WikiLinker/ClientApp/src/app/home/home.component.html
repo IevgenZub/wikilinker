@@ -26,7 +26,7 @@
       <label><b>{{ photos.length }} Wiki articles</b></label>
       <div class="row" *ngFor="let type of entityTypes">
         <div class="col-12">
-          <p>{{ type.name }}</p>
+          {{ type.name }}
         </div>
         <div class="col-12 col-md-6" *ngFor="let photo of type.photos">
           <div class="row">
@@ -37,9 +37,7 @@
             </div>
             <div class="col-12 col-md-7">
               <a target="_blank" href="{{ photo.url }}">{{ photo.title }}</a>
-              <p>{{ photo.description.slice(0, 250) }}</p>
-              <br />
-              <br />
+              <p style="padding-bottom:10px">{{ photo.description.slice(0, 250) }}</p>
             </div>
           </div>
         </div>
