@@ -68,7 +68,7 @@ export class HomeComponent {
       for (let delimiter of delimiters) {
         linkedText = linkedText.replace(
           `${delimiter[0]}${link.text}${delimiter[1]}`,
-          `<a class='${cssClass}' href='${link.url}'>${delimiter[0]}${link.text}${delimiter[1]}</a>`
+          `<a target='_blank' class='${cssClass}' href='${link.url}'>${delimiter[0]}${link.text}${delimiter[1]}</a>`
         );
       }
     }
