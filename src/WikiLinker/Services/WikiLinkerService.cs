@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,31 +20,34 @@ namespace WikiLinker.Services
 
         public async Task<string> FindLinksAndImages(string input)
         {
-            var words = new SortedSet<string>();
+            var words = new SortedDictionary<string, string>();
             var photos = new HashSet<dynamic>();
             var language = await _client.DetectLanguageAsync(input);
+            var languageIso = language.DetectedLanguages[0].Iso6391Name;
             
-
-            var entitiesResponse = await _client.EntitiesAsync(input, language.DetectedLanguages[0].Iso6391Name);
+            var entitiesResponse = await _client.EntitiesAsync(input, languageIso);
             foreach (var entity in entitiesResponse.Entities)
             {
-                words.Add($"{entity.Name}_{entity.Type}");
+                if (!words.ContainsKey(entity.Name))
+                {
+                    words[entity.Name] = entity.Type;
+                }
             }
 
-            var keyPhrasesResponse = await _client.KeyPhrasesAsync(input, language.DetectedLanguages[0].Iso6391Name);
+            var keyPhrasesResponse = await _client.KeyPhrasesAsync(input, languageIso);
             foreach (var keyPhrase in keyPhrasesResponse.KeyPhrases)
             {
-                words.Add($"{keyPhrase}_Phrase");
+                if (!words.ContainsKey(keyPhrase))
+                {
+                    words[keyPhrase] = "Phrase";
+                }
             }
 
-            foreach (var word in words)
+            foreach (var text in words.Keys)
             {
-                var text = word.Split('_')[0];
-                var type = word.Split('_')[1];
-
-                using var httpClient = new HttpClient();
                 var encodedEntity = HttpUtility.UrlEncode(text);
-
+                var type = words[text];
+                using var httpClient = new HttpClient();
                 var wikiResponseRaw = await httpClient.GetStringAsync(
                    $"{WikiSearchEndpoint}?action=opensearch&" +
                    $"search={encodedEntity}&" +
@@ -54,43 +58,23 @@ namespace WikiLinker.Services
                 if (!string.IsNullOrEmpty(wikiResponseRaw))
                 {
                     var wikiResponse = (JArray)JsonConvert.DeserializeObject(wikiResponseRaw);
-                    if (wikiResponse.Count == 4)
+                    var link = wikiResponse.SelectToken("$[3].[0]")?.Value<string>();
+                    var description = wikiResponse.SelectToken("$[2].[0]")?.Value<string>();
+
+                    if (!string.IsNullOrEmpty(link))
                     {
-                        var links = (JArray)wikiResponse[3];
-                        if (links.Count == 1)
+                        var delimiters = new List<KeyValuePair<string, string>>
                         {
-                            var link = ((JArray)wikiResponse[3])[0].Value<string>();
-                            var description = ((JArray)wikiResponse[2])[0].Value<string>();
+                            new KeyValuePair<string, string>(" ", ""),
+                            new KeyValuePair<string, string>(" ", " "),
+                            new KeyValuePair<string, string>(" ", "."),
+                            new KeyValuePair<string, string>(". ", " "),
+                            new KeyValuePair<string, string>(", ", " "),
+                            new KeyValuePair<string, string>(" ", ", "),
+                        };
 
-                            input = " " + input;
-                            input = ReplaceWithLink(input, " ", text, "", link);
-                            input = ReplaceWithLink(input, " ", text, " ", link);
-                            input = ReplaceWithLink(input, ", ", text, " ", link);
-                            input = ReplaceWithLink(input, ". ", text, " ", link);
-
-                            var wikiImageResponse = await httpClient.GetStringAsync(
-                               $"{WikiSearchEndpoint}?action=query&" +
-                                "prop=pageimages&" +
-                                "formatversion=2&" +
-                                "format=json&" +
-                                "piprop=original&" +
-                               $"titles={text}");
-
-                            var imageUrl = ((JObject)JsonConvert.DeserializeObject(wikiImageResponse))
-                                .SelectToken("$.query.pages[0].original.source")?.Value<string>();
-
-                            if (!string.IsNullOrEmpty(imageUrl))
-                            {
-                                photos.Add(new 
-                                { 
-                                    imageUrl = imageUrl, 
-                                    title = text, 
-                                    link = link, 
-                                    type = type, 
-                                    description = description 
-                                });
-                            }
-                        }
+                        input = ReplaceWithLink(input, text, link, delimiters);
+                        await GetWikiImage(httpClient, photos, text, link, description, type);
                     }
                 }
             }
@@ -98,11 +82,37 @@ namespace WikiLinker.Services
             return JsonConvert.SerializeObject(new { input = input, photos = photos });
         }
 
-        private static string ReplaceWithLink(string input, string delimiterBefore, string text, string delimiterAfter, string link)
+        private static async Task GetWikiImage(HttpClient httpClient, HashSet<dynamic> photos, string text, string link, string description, string type)
         {
-            input = input.Replace(
-                $"{delimiterBefore}{text}{delimiterAfter}", 
-                $"<a target='_blank' href='{link}'>{delimiterBefore}{text}{delimiterAfter}</a>");
+            var wikiImageResponse = await httpClient.GetStringAsync(
+               $"{WikiSearchEndpoint}?action=query&" +
+                "prop=pageimages&" +
+                "formatversion=2&" +
+                "format=json&" +
+                "piprop=original&" +
+               $"titles={text}");
+
+            var imageUrl = ((JObject)JsonConvert.DeserializeObject(wikiImageResponse))
+                .SelectToken("$.query.pages[0].original.source")?.Value<string>();
+
+            if (!string.IsNullOrEmpty(imageUrl))
+            {
+                photos.Add(new
+                {
+                    imageUrl = imageUrl, title = text, link = link, type = type, description = description
+                });
+            }
+        }
+
+        private static string ReplaceWithLink(string input, string text, string link, List<KeyValuePair<string, string>> delimiters)
+        {
+            input = " " + input;
+            foreach (var delimiter in delimiters)
+            {
+                input = input.Replace(
+                    $"{delimiter.Key}{text}{delimiter.Value}",
+                    $"<a target='_blank' href='{link}'>{delimiter.Key}{text}{delimiter.Value}</a>");
+            }
 
             return input;
         }
