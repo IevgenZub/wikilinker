@@ -56,11 +56,22 @@ export class HomeComponent {
     let delimiters = [[" ", " "], [". ", " "], [", ", " "], [" ", "."], [" ", ", "]];
     let linkedText = " " + articleData.text + " ";
     for (let link of this.links) {
-      
       let typeName = link.type;
       let cssClass = this.getLinkStyle(typeName);
       if (this.linkTypes.filter(l => l.name == typeName).length == 0) {
-        this.linkTypes.push({ name: typeName, links: this.links.filter(l => l.type == typeName && l.description.length > 0) });
+        var links = this.links.filter(l =>
+          l.type == typeName &&
+          l.description.length > 0 &&
+          !l.description.includes("may refer to:"));
+
+        if (links.length > 0) {
+          this.linkTypes.push({
+            name: typeName, links: this.links.filter(l =>
+              l.type == typeName &&
+              l.description.length > 0 &&
+              !l.description.includes("may refer to:"))
+          });
+        }
       }
 
       for (let delimiter of delimiters) {
@@ -71,17 +82,26 @@ export class HomeComponent {
       }
 
       let innerLinkedText = link.description;
-      
       if (link.innerSearch && innerLinkedText.length > 0) {
         for (let innerLink of link.innerSearch.links) {
           link.innerLinkTypes = [];
           let innerTypeName = innerLink.type;
           let innerCss = this.getLinkStyle(innerTypeName);
           if (link.innerLinkTypes.filter(l => l.name == innerTypeName).length == 0) {
-            link.innerLinkTypes.push({
-              name: innerTypeName,
-              links: link.innerSearch.links.filter(l => l.type == innerTypeName && l.description.length > 0)
-            });
+            var innerLinks = link.innerSearch.links.filter(l =>
+              l.type == innerTypeName &&
+              l.description.length > 0 &&
+              !l.description.includes("may refer to:"));
+
+            if (innerLinks.length > 0) {
+              link.innerLinkTypes.push({
+                name: innerTypeName,
+                links: link.innerSearch.links.filter(l =>
+                  l.type == innerTypeName &&
+                  l.description.length > 0 &&
+                  !l.description.includes("may refer to:"))
+              });
+            }
           }
 
           for (let delimiter of delimiters) {
