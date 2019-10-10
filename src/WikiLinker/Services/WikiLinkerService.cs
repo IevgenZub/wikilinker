@@ -24,7 +24,7 @@ namespace WikiLinker.Services
             var photos = new List<dynamic>();
             var links = new List<dynamic>();
             var words = new SortedDictionary<string, string>();
-
+            
             var language = await _client.DetectLanguageAsync(input);
             var languageIso = language.DetectedLanguages[0].Iso6391Name;
 
@@ -79,12 +79,12 @@ namespace WikiLinker.Services
                         $"titles={text}");
 
                     var imageUrl = ((JObject)JsonConvert.DeserializeObject(wikiImageResponse))
-                                         .SelectToken("$.query.pages[0].original.source")?.Value<string>();
+                        .SelectToken("$.query.pages[0].original.source")?.Value<string>();
 
                     imageUrl = string.IsNullOrEmpty(imageUrl) ? PlaceholderImage : imageUrl;
 
-                    object innerSearch = null;
                     string innerSearchRaw = null;
+                    object innerSearch = null;
                     if (recursionLevel == 0 && description.Length > 30)
                     {
                         innerSearchRaw = await FindLinksAndImages(description, recursionLevel + 1);
