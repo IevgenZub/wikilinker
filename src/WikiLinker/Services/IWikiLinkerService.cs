@@ -4,6 +4,6 @@ namespace WikiLinker.Services
 {
     public interface IWikiLinkerService
     {
-        Task<string> FindLinksAndImages(string input);
+        Task<string> FindLinksAndImages(string input, int recursionLevel = 0);
     }
 }

@@ -56,23 +56,9 @@ export class HomeComponent {
     let delimiters = [[" ", " "], [". ", " "], [", ", " "], [" ", "."], [" ", ", "]];
     let linkedText = " " + articleData.text + " ";
     for (let link of this.links) {
-      let cssClass = "text-primary";
-      switch (link.type) {
-        case "LOCATION":
-          cssClass = "text-success";
-          break;
-        case "DATETIME":
-          cssClass = "text-warning";
-          break;
-        case "OTHER":
-          cssClass = "text-secondary";
-          break;
-        case "PHRASE":
-          cssClass = "text-info";
-          break;
-      }
-
+      
       let typeName = link.type;
+      let cssClass = this.getLinkStyle(typeName);
       if (this.linkTypes.filter(l => l.name == typeName).length == 0) {
         this.linkTypes.push({ name: typeName, links: this.links.filter(l => l.type == typeName) });
       }
@@ -83,10 +69,45 @@ export class HomeComponent {
           `<a target='_blank' class='${cssClass}' href='${link.url}'>${delimiter[0]}${link.text}${delimiter[1]}</a>`
         );
       }
+
+      let innerLinkedText = link.description;
+      if (link.innerSearch) {
+        for (let innerLink of link.innerSearch.links) {
+          let innerCss = this.getLinkStyle(innerLink.type);
+          for (let delimiter of delimiters) {
+            innerLinkedText = innerLinkedText.replace(
+              `${delimiter[0]}${innerLink.text}${delimiter[1]}`,
+              `<a target='_blank' class='${innerCss}' href='${innerLink.url}'>${delimiter[0]}${innerLink.text}${delimiter[1]}</a>`
+            );
+          }
+        }
+
+        link.description = innerLinkedText;
+      }
     }
 
     this.wikiLinkedArticle.text = linkedText;
     this.searchStarted = false;
+  }
+
+  private getLinkStyle(type) {
+    let cssClass = "text-primary";
+    switch (type) {
+      case "LOCATION":
+        cssClass = "text-success";
+        break;
+      case "DATETIME":
+        cssClass = "text-warning";
+        break;
+      case "OTHER":
+        cssClass = "text-secondary";
+        break;
+      case "PHRASE":
+        cssClass = "text-info";
+        break;
+    }
+
+    return cssClass;
   }
 }
 
