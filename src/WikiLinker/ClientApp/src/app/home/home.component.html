@@ -39,7 +39,7 @@
     <div class="form-group">
       <div class="card">
         <div class="card-header">
-          Search results
+          <span style="font-size:larger">Search results</span>
           <button [hidden]=!wikiLinkedArticle.text class="btn btn-primary float-right" (click)="reset()">New Search</button>
         </div>
         <div class="card-body">
@@ -60,18 +60,49 @@
   <div class="col-12">
     <div class="row" *ngFor="let type of linkTypes">
       <div class="col-12">
-        {{ type.name }}
+        <h5>{{ type.name }}</h5>
       </div>
-      <div class="col-12 col-md-6" *ngFor="let link of type.links">
+      <div class="col-12" *ngFor="let link of type.links">
         <div class="row">
-          <div class="col-12 col-md-5">
+          <div class="col-12 col-md-3">
             <a target="_blank" href="{{ link.url }}">
-              <img style="width:14rem; height:10rem;" src="{{ link.imageUrl }}" alt="Smiley face" />
+              <img style="width:16rem; height:12rem;" src="{{ link.imageUrl }}" alt="Smiley face" />
             </a>
           </div>
-          <div class="col-12 col-md-7">
-            <a target="_blank" href="{{ link.url }}">{{ link.text }}</a>
-            <div [innerHTML]="link.description"></div>
+          <div class="col-12 col-md-9">
+            <div class="card">
+              <div class="card-header">
+                <a target="_blank" href="{{ link.url }}"><b>{{ link.text }}</b></a>
+              </div>
+              <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                  <div [innerHTML]="link.description"></div>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row top-buffer" *ngFor="let innerType of link.innerLinkTypes">
+          <div class="col-12">
+            <p>{{ innerType.name }}</p>
+          </div>
+          <div class="col-6 top-buffer" *ngFor="let innerLink of innerType.links">
+            <div class="row">
+              <div class="col-12 col-md-4">
+                <a target="_blank" href="{{ innerLink.url }}">
+                  <img style="width:10rem; height:8rem;" src="{{ innerLink.imageUrl }}" alt="Smiley face" />
+                </a>
+              </div>
+              <div class="col-12 col-md-8">
+                <a target="_blank" href="{{ innerLink.url }}">{{ innerLink.text }}</a>
+                <p>{{ innerLink.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <hr />
           </div>
         </div>
       </div>

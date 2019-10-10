@@ -60,7 +60,7 @@ export class HomeComponent {
       let typeName = link.type;
       let cssClass = this.getLinkStyle(typeName);
       if (this.linkTypes.filter(l => l.name == typeName).length == 0) {
-        this.linkTypes.push({ name: typeName, links: this.links.filter(l => l.type == typeName) });
+        this.linkTypes.push({ name: typeName, links: this.links.filter(l => l.type == typeName && l.description.length > 0) });
       }
 
       for (let delimiter of delimiters) {
@@ -71,9 +71,19 @@ export class HomeComponent {
       }
 
       let innerLinkedText = link.description;
-      if (link.innerSearch) {
+      
+      if (link.innerSearch && innerLinkedText.length > 0) {
         for (let innerLink of link.innerSearch.links) {
-          let innerCss = this.getLinkStyle(innerLink.type);
+          link.innerLinkTypes = [];
+          let innerTypeName = innerLink.type;
+          let innerCss = this.getLinkStyle(innerTypeName);
+          if (link.innerLinkTypes.filter(l => l.name == innerTypeName).length == 0) {
+            link.innerLinkTypes.push({
+              name: innerTypeName,
+              links: link.innerSearch.links.filter(l => l.type == innerTypeName && l.description.length > 0)
+            });
+          }
+
           for (let delimiter of delimiters) {
             innerLinkedText = innerLinkedText.replace(
               `${delimiter[0]}${innerLink.text}${delimiter[1]}`,
