@@ -14,6 +14,7 @@ namespace WikiLinker.Services
         private const string AzureTextAnalyticsKey = "ced608eaa18b4bd195cd895dce0ec44c";
         private const string AzureTextAnalyticsEndpoint = "https://team-builder-text-analytics.cognitiveservices.azure.com/";
         private const string WikiSearchEndpoint = "https://en.wikipedia.org/w/api.php";
+        private const string PlaceholderImage = "https://news-cdn.softpedia.com/images/news2/Wikipedia-Rolls-Out-Support-for-Encrypted-HTTPS-Connections-2.jpg";
 
         private readonly TextAnalyticsClient _client = new TextAnalyticsClient(
             new ApiKeyServiceClientCredentials(AzureTextAnalyticsKey)) { Endpoint = AzureTextAnalyticsEndpoint };
@@ -28,20 +29,26 @@ namespace WikiLinker.Services
             var languageIso = language.DetectedLanguages[0].Iso6391Name;
 
             var entitiesResponse = await _client.EntitiesAsync(input, languageIso);
-            foreach (var entity in entitiesResponse.Entities.Where(e => e.Type != "Quantity"))
+            if (entitiesResponse.Entities != null)
             {
-                if (!words.ContainsKey(entity.Name))
+                foreach (var entity in entitiesResponse.Entities.Where(e => e.Type != "Quantity"))
                 {
-                    words[entity.Name] = entity.Type.ToUpper();
+                    if (!words.ContainsKey(entity.Name))
+                    {
+                        words[entity.Name] = entity.Type.ToUpper();
+                    }
                 }
             }
 
             var keyPhrasesResponse = await _client.KeyPhrasesAsync(input, languageIso);
-            foreach (var keyPhrase in keyPhrasesResponse.KeyPhrases)
+            if (keyPhrasesResponse.KeyPhrases != null)
             {
-                if (!words.ContainsKey(keyPhrase))
+                foreach (var keyPhrase in keyPhrasesResponse.KeyPhrases)
                 {
-                    words[keyPhrase] = "PHRASE";
+                    if (!words.ContainsKey(keyPhrase))
+                    {
+                        words[keyPhrase] = "PHRASE";
+                    }
                 }
             }
 
@@ -71,15 +78,19 @@ namespace WikiLinker.Services
                          "piprop=original&" +
                         $"titles={text}");
 
-                   var imageUrl = ((JObject)JsonConvert.DeserializeObject(wikiImageResponse))
-                        .SelectToken("$.query.pages[0].original.source")?.Value<string>();
+                    var imageUrl = ((JObject)JsonConvert.DeserializeObject(wikiImageResponse))
+                                         .SelectToken("$.query.pages[0].original.source")?.Value<string>();
 
-                    if (string.IsNullOrEmpty(imageUrl))
-                    {
-                        imageUrl = "http://municipalmagazine.com/wp-content/uploads/2017/04/jayankondam-wiki.png";
-                    }
+                    imageUrl = string.IsNullOrEmpty(imageUrl) ? PlaceholderImage : imageUrl;
 
-                    links.Add(new { text = text, url = url, type = type, description = description, imageUrl = imageUrl });
+                    links.Add(new 
+                    { 
+                        text = text, 
+                        url = url, 
+                        type = type, 
+                        description = description, 
+                        imageUrl = imageUrl 
+                    });
                 }
             }
 
