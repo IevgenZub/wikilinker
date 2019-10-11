@@ -9,7 +9,8 @@ import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  SEARCH_HISTORY_KEY = "SEARCH_HISTORY";
+  readonly SEARCH_HISTORY_KEY = "WIKILINKER_SEARCH_HISTORY";
+  readonly SAVED_ARTICLES_KEY = "WIKILINKER_SAVED_ARTICLES";
   faTrash = faTrash;
   faBookOpen = faBookOpen;
   faUndo = faUndo;
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit {
   words = [];
   wordTypes = [];
   searchHistory = [];
+  savedArticles = [];
   articleForm = this.formBuilder.group({
     text: new FormControl(this.article.text, [Validators.required, Validators.minLength(3)])
   });
@@ -32,6 +34,12 @@ export class HomeComponent implements OnInit {
       this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);
     } else {
       this.searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
+    }
+
+    if (!this.storage.has(this.SAVED_ARTICLES_KEY)) {
+      this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);
+    } else {
+      this.savedArticles = this.storage.get(this.SAVED_ARTICLES_KEY);
     }
   }
 
@@ -57,6 +65,16 @@ export class HomeComponent implements OnInit {
   removeFromHistory(text) {
     this.searchHistory = this.searchHistory.filter(sh => sh.text != text);
     this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);    
+  }
+
+  removeSavedArticle(text) {
+    this.savedArticles = this.savedArticles.filter(sh => sh.text != text);
+    this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);    
+  }
+
+  saveArticle(text, url, description, type) {
+    this.savedArticles.push({ text: text, url: url, description: description, type: type });
+    this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);
   }
 
   reset() {

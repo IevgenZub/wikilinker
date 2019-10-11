@@ -73,8 +73,12 @@
             <div class="card">
               <div class="card-header">
                 <a target="_blank" href="{{ link.url }}"><b>{{ link.text }}</b></a>
-                <button class="btn btn-primary btn-sm float-right left-buffer" (click)="searchDetails(link.description)"><fa-icon [icon]="faSearch"></fa-icon></button>
-                <button class="btn btn-info btn-sm float-right" (click)="saveArticle()"><fa-icon [icon]="faSave"></fa-icon></button>
+                <button class="btn btn-primary btn-sm float-right left-buffer" (click)="searchDetails(link.description)">
+                  <fa-icon [icon]="faSearch"></fa-icon>
+                </button>
+                <button class="btn btn-info btn-sm float-right" (click)="saveArticle(link.text, link.url, link.linkedDescription, type.name)">
+                  <fa-icon [icon]="faSave"></fa-icon>
+                </button>
               </div>
               <div class="card-body">
                 <blockquote class="blockquote mb-0">
@@ -96,8 +100,13 @@
                 </a>
               </div>
               <div class="col-12 col-md-8">
-                <button class="btn btn-primary btn-sm float-right left-buffer" (click)="searchDetails(innerLink.description)"><fa-icon [icon]="faSearch"></fa-icon></button>
-                <button class="btn btn-info btn-sm float-right" (click)="saveArticle()"><fa-icon [icon]="faSave"></fa-icon></button>
+                <button class="btn btn-primary btn-sm float-right left-buffer" (click)="searchDetails(innerLink.description)">
+                  <fa-icon [icon]="faSearch"></fa-icon>
+                </button>
+                <button class="btn btn-info btn-sm float-right"
+                        (click)="saveArticle(innerLink.text, innerLink.url, innerLink.description, innerType.name)">
+                  <fa-icon [icon]="faSave"></fa-icon>
+                </button>
                 <a target="_blank" href="{{ innerLink.url }}">{{ innerLink.text }}</a>
                 <p>{{ innerLink.description }}</p>
               </div>
@@ -128,6 +137,21 @@
     </ul>
   </div>
 </div>
+<!-- Saved articles -->
+<div class="row">
+  <div class="col-12">
+    <h4>{{ savedArticles.length }} Saved articles </h4>
+    <ul>
+      <li *ngFor="let savedArticle of savedArticles">
+        <a href="{{savedArticle.url}}">{{ savedArticle.text }} ({{ savedArticle.type }})</a>
+        <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
+                (click)="removeSavedArticle(savedArticle.text)">
+          <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
 <!-- Search History -->
 <div class="row">
   <div class="col-12">
@@ -139,10 +163,9 @@
           <fa-icon [icon]="faBookOpen"></fa-icon>
           {{ historyItem.text.length > 100 ? historyItem.text.slice(0, 120) + "..." : historyItem.text}}
         </button>
-        <button class="btn btn-light btn-sm float-right"
+        <button class="btn btn-light btn-xs float-right py-0"  style="font-size: 0.8em;"
                 (click)="removeFromHistory(historyItem.text)">
-          <fa-icon style="color:gray" [icon]="faTrash">
-          </fa-icon>
+          <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
         </button>
       </li>
     </ul>
