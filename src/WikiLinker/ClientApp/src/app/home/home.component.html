@@ -41,7 +41,6 @@
         <div class="card-header">
           <span style="font-size:larger">Search results</span>
           <button class="btn btn-primary float-right left-buffer" (click)="reset()"><fa-icon [icon]="faSearch"></fa-icon> New search</button>
-          <button class="btn btn-info float-right" (click)="saveResult()"><fa-icon [icon]="faSave"></fa-icon></button>
         </div>
         <div class="card-body">
           <blockquote class="blockquote mb-0">
@@ -137,7 +136,13 @@
       <li *ngFor="let historyItem of searchHistory">
         <button class="btn btn-link text-left"
                 (click)="openHistory(historyItem.text)">
-          <fa-icon [icon]="faBookOpen"></fa-icon> {{ historyItem.text }}
+          <fa-icon [icon]="faBookOpen"></fa-icon>
+          {{ historyItem.text.length > 100 ? historyItem.text.slice(0, 120) + "..." : historyItem.text}}
+        </button>
+        <button class="btn btn-light btn-sm float-right"
+                (click)="removeFromHistory(historyItem.text)">
+          <fa-icon style="color:gray" [icon]="faTrash">
+          </fa-icon>
         </button>
       </li>
     </ul>

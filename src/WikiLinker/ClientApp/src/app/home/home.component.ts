@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { faSearch, faSave, faUndo, faBookOpen } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faSave, faUndo, faBookOpen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 
 @Component({
@@ -10,6 +10,7 @@ import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 })
 export class HomeComponent implements OnInit {
   SEARCH_HISTORY_KEY = "SEARCH_HISTORY";
+  faTrash = faTrash;
   faBookOpen = faBookOpen;
   faUndo = faUndo;
   faSearch = faSearch;
@@ -50,6 +51,12 @@ export class HomeComponent implements OnInit {
   openHistory(text) {
     let historyItem = this.searchHistory.filter(sh => sh.text == text)[0];
     this.displaySearchResult(historyItem.result, { text: text });
+    window.scroll(0, 0);
+  }
+
+  removeFromHistory(text) {
+    this.searchHistory = this.searchHistory.filter(sh => sh.text != text);
+    this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);    
   }
 
   reset() {
