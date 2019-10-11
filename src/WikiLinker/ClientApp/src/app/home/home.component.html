@@ -101,10 +101,10 @@
                 </a>
               </div>
               <div class="col-12 col-md-8">
-                <button class="btn btn-primary btn-sm float-right left-buffer" (click)="searchDetails(innerLink.description)">
+                <button class="btn btn-primary btn-sm float-right left-buffer py-0" style="font-size: 0.8em;" (click)="searchDetails(innerLink.description)">
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
-                <button class="btn btn-info btn-sm float-right"
+                <button class="btn btn-info btn-sm float-right py-0" style="font-size: 0.8em;"
                         (click)="saveArticle(innerLink.text, innerLink.url, innerLink.description, innerLink.imageUrl, innerType.name)">
                   <fa-icon [icon]="faSave"></fa-icon>
                 </button>
@@ -151,8 +151,8 @@
         <h4>{{ savedArticles.length }} Saved articles </h4>
       </div>
       <div class="col-4">
-        <button class="btn btn-info btn-sm float-right py-0" style="font-size: 0.8em;" (click)="showArticles()">
-          View all
+        <button class="btn btn-link btn-sm float-right" (click)="showArticles()">
+          View all...
         </button>
       </div>
     </div>
@@ -192,8 +192,8 @@
         <h4>{{ searchHistory.length }} Items in search history </h4>
       </div>
       <div class="col-4">
-        <button class="btn btn-info btn-sm float-right py-0" style="font-size: 0.8em;" (click)="showHistory()">
-          View all
+        <button class="btn btn-link btn-sm float-right buttom-buffer" (click)="showHistory()">
+          View all...
         </button>
       </div>
     </div>
