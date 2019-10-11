@@ -63,7 +63,7 @@
         <h5>{{ type.name }}</h5>
       </div>
       <div class="col-12" *ngFor="let link of type.links">
-        <div class="row">
+        <div class="row extra-bottom-buffer">
           <div class="col-12 col-md-3">
             <a target="_blank" href="{{ link.url }}">
               <img style="width:16rem; height:12rem;" src="{{ link.imageUrl }}" alt="Smiley face" />
@@ -89,11 +89,11 @@
             </div>
           </div>
         </div>
-        <div class="row top-buffer" *ngFor="let innerType of link.innerLinkTypes">
+        <div class="row" *ngFor="let innerType of link.innerLinkTypes">
           <div class="col-12">
             <p>{{ innerType.name }}</p>
           </div>
-          <div class="col-6 top-buffer" *ngFor="let innerLink of innerType.links">
+          <div class="col-6" *ngFor="let innerLink of innerType.links">
             <div class="row">
               <div class="col-12 col-md-4">
                 <a target="_blank" href="{{ innerLink.url }}">
@@ -123,7 +123,6 @@
     </div>
   </div>
 </div>
-<br />
 <!-- Words -->
 <div [hidden]=!wikiLinkedArticle.text class="row">
   <div class="col-12">
@@ -143,72 +142,73 @@
     <hr />
   </div>
 </div>
-<!-- Saved articles -->
+<!--Saved articles & Search history-->
 <div class="row">
-  <div class="col-12">
-    <div class="row">
-      <div class="col-8">
-        <h4>{{ savedArticles.length }} Saved articles </h4>
+  <div class="col-12 col-md-6">
+    <!-- Saved articles -->
+    <div class="row top-buffer">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-8">
+            <h4>{{ savedArticles.length }} Saved articles </h4>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-link btn-sm float-right" (click)="showArticles()">
+              View all...
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="col-4">
-        <button class="btn btn-link btn-sm float-right" (click)="showArticles()">
-          View all...
-        </button>
+      <div class="col-12 top-buffer" *ngFor="let savedArticle of savedArticles | slice:0:2">
+        <div class="row extra-bottom-buffer">
+          <div class="col-12 col-md-4">
+            <a target="_blank" href="{{ savedArticle.url }}">
+              <img style="width:10rem; height:8rem;" class="bottom-buffer" src="{{ savedArticle.imageUrl }}" alt="Smiley face" />
+            </a>
+          </div>
+          <div class="col-12 col-md-8">
+            <button class="btn btn-primary btn-xs float-right py-0 left-buffer" style="font-size: 0.8em;"
+                    (click)="searchDetails(savedArticle.text)">
+              <fa-icon [icon]="faSearch"></fa-icon>
+            </button>
+            <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
+                    (click)="removeSavedArticle(savedArticle.text)">
+              <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
+            </button>
+            <a target="_blank" href="{{ savedArticle.url }}">{{ savedArticle.text }} <small>({{ (savedArticle.type)}})</small></a>
+            <div [innerHTML]="savedArticle.description"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col-6 top-buffer" *ngFor="let savedArticle of savedArticles | slice:0:2">
-    <div class="row">
-      <div class="col-12 col-md-4">
-        <a target="_blank" href="{{ savedArticle.url }}">
-          <img style="width:10rem; height:8rem;" class="buttom-buffer" src="{{ savedArticle.imageUrl }}" alt="Smiley face" />
-        </a>
-      </div>
-      <div class="col-12 col-md-8">
-        <button class="btn btn-primary btn-xs float-right py-0 left-buffer" style="font-size: 0.8em;"
-                (click)="searchDetails(savedArticle.text)">
-          <fa-icon [icon]="faSearch"></fa-icon>
-        </button>
-        <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
-                (click)="removeSavedArticle(savedArticle.text)">
-          <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
-        </button>
-        <a target="_blank" href="{{ savedArticle.url }}">{{ savedArticle.text }} <small>({{ (savedArticle.type)}})</small></a>
-        <div [innerHTML]="savedArticle.description"></div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-12">
-    <hr />
-  </div>
-</div>
-<!-- Search History -->
-<div class="row">
-  <div class="col-12">
-    <div class="row">
-      <div class="col-8">
-        <h4>{{ searchHistory.length }} Items in search history </h4>
-      </div>
-      <div class="col-4">
-        <button class="btn btn-link btn-sm float-right buttom-buffer" (click)="showHistory()">
-          View all...
-        </button>
+  <div class="col-12 col-md-6">
+    <!-- Search History -->
+    <div class="row top-buffer">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-8">
+            <h4>{{ searchHistory.length }} Items in search history </h4>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-link btn-sm float-right bottom-buffer" (click)="showHistory()">
+              View all...
+            </button>
+          </div>
+        </div>
+        <ul>
+          <li *ngFor="let historyItem of searchHistory | slice:0:10">
+            <button class="btn btn-link text-left py-0" style="font-size: 0.8em;"
+                    (click)="openHistory(historyItem.text)">
+              {{ historyItem.text.length > 100 ? historyItem.text.slice(0, 120) + "..." : historyItem.text}}
+            </button>
+            <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
+                    (click)="removeFromHistory(historyItem.text)">
+              <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
-    <ul>
-      <li *ngFor="let historyItem of searchHistory | slice:0:4">
-        <button class="btn btn-link text-left"
-                (click)="openHistory(historyItem.text)">
-          <fa-icon [icon]="faBookOpen"></fa-icon>
-          {{ historyItem.text.length > 100 ? historyItem.text.slice(0, 120) + "..." : historyItem.text}}
-        </button>
-        <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
-                (click)="removeFromHistory(historyItem.text)">
-          <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
-        </button>
-      </li>
-    </ul>
   </div>
 </div>

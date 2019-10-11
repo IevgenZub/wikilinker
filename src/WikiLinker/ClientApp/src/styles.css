@@ -16,13 +16,18 @@ code {
 }
 
 .top-buffer {
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
-.buttom-buffer {
-  margin-bottom: 10px;
+
+.extra-bottom-buffer {
+  margin-bottom: 15px;
+}
+
+.bottom-buffer {
+  margin-bottom: 5px;
 }
 
 .left-buffer {
-  margin-left: 10px;
+  margin-left: 5px;
 }
