@@ -62,7 +62,7 @@
         <h5>{{ type.name }}</h5>
       </div>
       <div class="col-12" *ngFor="let link of type.links">
-        <div class="row extra-bottom-buffer">
+        <div class="row">
           <div class="col-12 col-md-3">
             <a target="_blank" href="{{ link.url }}">
               <img style="width:16rem; height:12rem;" src="{{ link.imageUrl }}" alt="Smiley face" />
@@ -181,13 +181,13 @@
         </div>
       </div>
       <div class="col-12 top-buffer" *ngFor="let savedArticle of savedArticles | slice:0:2">
-        <div class="row extra-bottom-buffer">
-          <div class="col-12 col-md-4">
+        <div class="row">
+          <div class="col-12 col-md-3">
             <a target="_blank" href="{{ savedArticle.url }}">
-              <img style="width:10rem; height:8rem;" class="bottom-buffer" src="{{ savedArticle.imageUrl }}" alt="Smiley face" />
+              <img style="width:9rem; height:8rem;" class="bottom-buffer" src="{{ savedArticle.imageUrl }}" alt="Smiley face" />
             </a>
           </div>
-          <div class="col-12 col-md-8">
+          <div class="col-12 col-md-9">
             <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
                     (click)="searchDetails(savedArticle.description)">
               <fa-icon [icon]="faSearch"></fa-icon>
