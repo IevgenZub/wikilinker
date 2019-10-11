@@ -72,8 +72,16 @@ export class HomeComponent implements OnInit {
     this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);    
   }
 
-  saveArticle(text, url, description, imageUrl, type) {
-    this.savedArticles.push({ text: text, url: url, description: description, imageUrl: imageUrl, type: type });
+  saveArticle(text, url, description, linkedDescription, imageUrl, type) {
+    this.savedArticles.push({
+      text: text,
+      url: url,
+      description: description,
+      linkedDescription: linkedDescription,
+      imageUrl: imageUrl,
+      type: type
+    });
+
     this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);
   }
 

@@ -55,7 +55,7 @@
 <!-- Links -->
 <div [hidden]=!wikiLinkedArticle.text class="row">
   <div class="col-12">
-    <h4>{{ links.length }} Wiki articles</h4>
+    <h4>Wiki articles <span class="badge badge-light">{{ links.length }}</span></h4>
   </div>
   <div class="col-12">
     <div class="row" *ngFor="let type of linkTypes">
@@ -77,7 +77,7 @@
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
                 <button class="btn btn-info btn-sm float-right"
-                        (click)="saveArticle(link.text, link.url, link.linkedDescription, link.imageUrl, type.name)">
+                        (click)="saveArticle(link.text, link.url, link.description, link.linkedDescription, link.imageUrl, type.name)">
                   <fa-icon [icon]="faSave"></fa-icon>
                 </button>
               </div>
@@ -105,7 +105,7 @@
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
                 <button class="btn btn-info btn-sm float-right py-0" style="font-size: 0.8em;"
-                        (click)="saveArticle(innerLink.text, innerLink.url, innerLink.description, innerLink.imageUrl, innerType.name)">
+                        (click)="saveArticle(innerLink.text, innerLink.url, innerLink.description, innerLink.description, innerLink.imageUrl, innerType.name)">
                   <fa-icon [icon]="faSave"></fa-icon>
                 </button>
                 <a target="_blank" href="{{ innerLink.url }}">{{ innerLink.text }}</a>
@@ -126,7 +126,7 @@
 <!-- Words -->
 <div [hidden]=!wikiLinkedArticle.text class="row">
   <div class="col-12">
-    <h4>{{ words.length }} Entities and phrases detected </h4>
+    <h4><span class="badge badge-light">{{ words.length }}</span> Entities and phrases detected </h4>
   </div>
   <div class="col-6 col-md-4" *ngFor="let type of wordTypes">
     {{ type.name }}
@@ -150,7 +150,7 @@
       <div class="col-12">
         <div class="row">
           <div class="col-8">
-            <h4>{{ savedArticles.length }} Saved articles </h4>
+            <h4>Saved articles <span class="badge badge-light">{{ savedArticles.length }}</span></h4>
           </div>
           <div class="col-4">
             <button class="btn btn-link btn-sm float-right" (click)="showArticles()">
@@ -168,7 +168,7 @@
           </div>
           <div class="col-12 col-md-8">
             <button class="btn btn-primary btn-xs float-right py-0 left-buffer" style="font-size: 0.8em;"
-                    (click)="searchDetails(savedArticle.text)">
+                    (click)="searchDetails(savedArticle.description)">
               <fa-icon [icon]="faSearch"></fa-icon>
             </button>
             <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
@@ -176,7 +176,7 @@
               <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
             </button>
             <a target="_blank" href="{{ savedArticle.url }}">{{ savedArticle.text }} <small>({{ (savedArticle.type)}})</small></a>
-            <div class="small" [innerHTML]="savedArticle.description"></div>
+            <div class="small" [innerHTML]="savedArticle.linkedDescription"></div>
           </div>
         </div>
       </div>
@@ -188,7 +188,7 @@
       <div class="col-12">
         <div class="row">
           <div class="col-8">
-            <h4>{{ searchHistory.length }} Items in search history </h4>
+            <h4>Search history <span class="badge badge-light">{{ searchHistory.length }}</span></h4>
           </div>
           <div class="col-4">
             <button class="btn btn-link btn-sm float-right bottom-buffer" (click)="showHistory()">
@@ -200,7 +200,7 @@
           <li *ngFor="let historyItem of searchHistory | slice:0:10">
             <button class="btn btn-link text-left py-0" style="font-size: 0.8em;"
                     (click)="openHistory(historyItem.text)">
-              {{ historyItem.text.length > 100 ? historyItem.text.slice(0, 120) + "..." : historyItem.text}}
+              {{ historyItem.text.length > 100 ? historyItem.text.slice(0, 70) + "..." : historyItem.text}}
             </button>
             <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
                     (click)="removeFromHistory(historyItem.text)">
