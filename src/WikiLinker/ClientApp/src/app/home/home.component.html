@@ -83,7 +83,7 @@
               </div>
               <div class="card-body">
                 <blockquote class="blockquote mb-0">
-                  <div [innerHTML]="link.linkedDescription"></div>
+                  <div class="small" [innerHTML]="link.linkedDescription"></div>
                 </blockquote>
               </div>
             </div>
@@ -109,7 +109,7 @@
                   <fa-icon [icon]="faSave"></fa-icon>
                 </button>
                 <a target="_blank" href="{{ innerLink.url }}">{{ innerLink.text }}</a>
-                <p>{{ innerLink.description }}</p>
+                <p class="small">{{ innerLink.description }}</p>
               </div>
             </div>
           </div>
@@ -176,7 +176,7 @@
               <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
             </button>
             <a target="_blank" href="{{ savedArticle.url }}">{{ savedArticle.text }} <small>({{ (savedArticle.type)}})</small></a>
-            <div [innerHTML]="savedArticle.description"></div>
+            <div class="small" [innerHTML]="savedArticle.description"></div>
           </div>
         </div>
       </div>
