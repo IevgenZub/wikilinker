@@ -1,12 +1,16 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { faSearch, faSave, faUndo } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
+  faUndo = faUndo;
+  faSearch = faSearch;
+  faSave = faSave;
   searchStarted = false;
   article = <Article>{};
   wikiLinkedArticle = <Article>{};
@@ -32,6 +36,12 @@ export class HomeComponent {
       this.articleForm.reset();
       this.wikiLinkedArticle = <Article>{};
     }
+  }
+
+  searchDetails(text) {
+    this.article.text = text;
+    this.articleForm.controls['text'].setValue(text);
+    this.onSubmit({ text: text });
   }
 
   constructor(
@@ -112,7 +122,7 @@ export class HomeComponent {
           }
         }
 
-        link.description = innerLinkedText;
+        link.linkedDescription = innerLinkedText;
       }
     }
 

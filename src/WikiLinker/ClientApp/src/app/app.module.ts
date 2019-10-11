@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    FontAwesomeModule,
     ReactiveFormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([

@@ -14,11 +14,11 @@
       </div>
       <div class="form-group float-right">
         <button id="button-reset" type="button" [disabled]="searchStarted" class="btn btn-secondary" (click)="reset()">
-          Reset
+          <fa-icon [icon]="faUndo"></fa-icon>
         </button>
         &nbsp;
         <button id="button-submit" type="submit" [disabled]="!articleForm.valid" class="btn btn-primary">
-          Submit
+          <fa-icon [icon]="faSearch"></fa-icon>
         </button>
       </div>
     </form>
@@ -40,8 +40,8 @@
       <div class="card border-primary">
         <div class="card-header">
           <span style="font-size:larger">Search results</span>
-          <button class="btn btn-primary float-right left-buffer" (click)="reset()">New Search</button>
-          <button class="btn btn-info float-right" (click)="save()">Save result</button>
+          <button class="btn btn-primary float-right left-buffer" (click)="reset()"><fa-icon [icon]="faSearch"></fa-icon> New search</button>
+          <button class="btn btn-info float-right" (click)="saveResult()"><fa-icon [icon]="faSave"></fa-icon></button>
         </div>
         <div class="card-body">
           <blockquote class="blockquote mb-0">
@@ -74,12 +74,12 @@
             <div class="card">
               <div class="card-header">
                 <a target="_blank" href="{{ link.url }}"><b>{{ link.text }}</b></a>
-                <button class="btn btn-primary btn-sm float-right left-buffer" (click)="reset()">Search details</button>
-                <button class="btn btn-info btn-sm float-right" (click)="saveArticle()">Save article</button>
+                <button class="btn btn-primary btn-sm float-right left-buffer" (click)="searchDetails(link.description)"><fa-icon [icon]="faSearch"></fa-icon></button>
+                <button class="btn btn-info btn-sm float-right" (click)="saveArticle()"><fa-icon [icon]="faSave"></fa-icon></button>
               </div>
               <div class="card-body">
                 <blockquote class="blockquote mb-0">
-                  <div [innerHTML]="link.description"></div>
+                  <div [innerHTML]="link.linkedDescription"></div>
                 </blockquote>
               </div>
             </div>
@@ -97,6 +97,8 @@
                 </a>
               </div>
               <div class="col-12 col-md-8">
+                <button class="btn btn-primary btn-sm float-right left-buffer" (click)="searchDetails(innerLink.description)"><fa-icon [icon]="faSearch"></fa-icon></button>
+                <button class="btn btn-info btn-sm float-right" (click)="saveArticle()"><fa-icon [icon]="faSave"></fa-icon></button>
                 <a target="_blank" href="{{ innerLink.url }}">{{ innerLink.text }}</a>
                 <p>{{ innerLink.description }}</p>
               </div>
