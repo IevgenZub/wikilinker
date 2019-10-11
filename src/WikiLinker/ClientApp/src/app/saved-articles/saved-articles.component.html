@@ -1,29 +1,32 @@
 <div class="row">
   <div class="col-12">
-    <div class="row">
-      <div class="col-12">
-        <h3>Saved articles <span class="badge badge-light">{{ savedArticles.length }}</span></h3>
-      </div>
-    </div>
+    <h3>Saved articles <span class="badge badge-light">{{ savedArticles.length }}</span></h3>
   </div>
-  <div class="col-12 top-buffer" *ngFor="let savedArticle of savedArticles">
-    <div class="row extra-bottom-buffer">
-      <div class="col-12 col-md-2">
-        <a target="_blank" href="{{ savedArticle.url }}">
-          <img style="width:10rem; height:8rem;" class="bottom-buffer" src="{{ savedArticle.imageUrl }}" alt="Smiley face" />
-        </a>
+  <div class="col-12">
+    <div class="row" *ngFor="let articleType of articleTypes">
+      <div class="col-12">
+        <h5>{{ articleType.name }}</h5>
       </div>
-      <div class="col-12 col-md-10">
-        <button class="btn btn-light btn-sm float-right"
-                (click)="searchDetails(savedArticle.description)">
-          <fa-icon [icon]="faSearch"></fa-icon>
-        </button>
-        <button class="btn btn-light btn-sm float-right"
-                (click)="removeSavedArticle(savedArticle.text)">
-          <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
-        </button>
-        <a target="_blank" href="{{ savedArticle.url }}">{{ savedArticle.text }} <small>({{ (savedArticle.type)}})</small></a>
-        <div [innerHTML]="savedArticle.linkedDescription"></div>
+      <div class="col-6" *ngFor="let savedArticle of articleType.articles">
+        <div class="row extra-bottom-buffer">
+          <div class="col-3">
+            <a target="_blank" href="{{ savedArticle.url }}">
+              <img style="width:8rem; height:7rem;" class="bottom-buffer" src="{{ savedArticle.imageUrl }}" alt="Smiley face" />
+            </a>
+          </div>
+          <div class="col-9">
+            <button class="btn btn-light btn-sm float-right"
+                    (click)="searchDetails(savedArticle.description)">
+              <fa-icon [icon]="faSearch"></fa-icon>
+            </button>
+            <button class="btn btn-light btn-sm float-right"
+                    (click)="removeSavedArticle(savedArticle.text)">
+              <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
+            </button>
+            <a target="_blank" href="{{ savedArticle.url }}">{{ savedArticle.text }} <small>({{ (savedArticle.type)}})</small></a>
+            <div [innerHTML]="savedArticle.linkedDescription"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
