@@ -153,9 +153,7 @@
             <h4>Saved articles <span class="badge badge-light">{{ savedArticles.length }}</span></h4>
           </div>
           <div class="col-4">
-            <button class="btn btn-link btn-sm float-right" (click)="showArticles()">
-              View all...
-            </button>
+            <a class="float-right small" [routerLink]="['/saved-articles']">View all...</a>
           </div>
         </div>
       </div>
@@ -191,9 +189,7 @@
             <h4>Search history <span class="badge badge-light">{{ searchHistory.length }}</span></h4>
           </div>
           <div class="col-4">
-            <button class="btn btn-link btn-sm float-right bottom-buffer" (click)="showHistory()">
-              View all...
-            </button>
+            <a class="float-right small" [routerLink]="['/search-history']">View all...</a>
           </div>
         </div>
         <ul>

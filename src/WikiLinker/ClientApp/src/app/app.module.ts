@@ -12,12 +12,16 @@ import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SavedArticlesComponent } from './saved-articles/saved-articles.component';
+import { SearchHistoryComponent } from './search-history/search-history.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent
+    HomeComponent,
+    SavedArticlesComponent,
+    SearchHistoryComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -28,7 +32,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ReactiveFormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' }
+      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'saved-articles', component: SavedArticlesComponent },
+      { path: 'search-history', component: SearchHistoryComponent}
     ])
   ],
   providers: [
