@@ -129,3 +129,17 @@
     </ul>
   </div>
 </div>
+<!-- Search History -->
+<div class="row">
+  <div class="col-12">
+    <h4>{{ searchHistory.length }} Items in search history </h4>
+    <ul>
+      <li *ngFor="let historyItem of searchHistory">
+        <button class="btn btn-link text-left"
+                (click)="openHistory(historyItem.text)">
+          <fa-icon [icon]="faBookOpen"></fa-icon> {{ historyItem.text }}
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>

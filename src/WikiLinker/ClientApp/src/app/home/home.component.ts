@@ -1,13 +1,16 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { faSearch, faSave, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faSave, faUndo, faBookOpen } from '@fortawesome/free-solid-svg-icons';
+import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  SEARCH_HISTORY_KEY = "SEARCH_HISTORY";
+  faBookOpen = faBookOpen;
   faUndo = faUndo;
   faSearch = faSearch;
   faSave = faSave;
@@ -18,17 +21,35 @@ export class HomeComponent {
   linkTypes = [];
   words = [];
   wordTypes = [];
+  searchHistory = [];
   articleForm = this.formBuilder.group({
     text: new FormControl(this.article.text, [Validators.required, Validators.minLength(3)])
   });
+
+  ngOnInit(): void {
+    if (!this.storage.has(this.SEARCH_HISTORY_KEY)) {
+      this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);
+    } else {
+      this.searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
+    }
+  }
 
   onSubmit(articleData) {
     this.searchStarted = true;
     this.wikiLinkedArticle = <Article>{};
     this.http.post(this.baseUrl + 'api/articles', articleData).subscribe(
-      result => this.displaySearchResult(result, articleData),
+      result => {
+        this.displaySearchResult(result, articleData);
+        this.searchHistory.push({ text: articleData.text, result: result });
+        this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);
+      },
       error => console.error(error)
     );
+  }
+
+  openHistory(text) {
+    let historyItem = this.searchHistory.filter(sh => sh.text == text)[0];
+    this.displaySearchResult(historyItem.result, { text: text });
   }
 
   reset() {
@@ -45,10 +66,13 @@ export class HomeComponent {
   }
 
   constructor(
+    @Inject(LOCAL_STORAGE)
+    private storage: StorageService,
     private formBuilder: FormBuilder,
     private http: HttpClient,
     @Inject('BASE_URL')
-    private baseUrl: string) { }
+    private baseUrl: string) {
+  }
 
   private displaySearchResult(result, articleData) {
     this.wordTypes = [];
