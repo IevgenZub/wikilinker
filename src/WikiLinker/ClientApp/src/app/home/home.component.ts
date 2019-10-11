@@ -29,6 +29,15 @@ export class HomeComponent implements OnInit {
     text: new FormControl(this.article.text, [Validators.required, Validators.minLength(3)])
   });
 
+  constructor(
+    @Inject(LOCAL_STORAGE)
+    private storage: StorageService,
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    @Inject('BASE_URL')
+    private baseUrl: string) {
+  }
+
   ngOnInit(): void {
     if (!this.storage.has(this.SEARCH_HISTORY_KEY)) {
       this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);
@@ -98,15 +107,6 @@ export class HomeComponent implements OnInit {
     this.onSubmit({ text: text });
   }
 
-  constructor(
-    @Inject(LOCAL_STORAGE)
-    private storage: StorageService,
-    private formBuilder: FormBuilder,
-    private http: HttpClient,
-    @Inject('BASE_URL')
-    private baseUrl: string) {
-  }
-
   private displaySearchResult(result, articleData) {
     this.wordTypes = [];
     this.linkTypes = [];
@@ -132,12 +132,7 @@ export class HomeComponent implements OnInit {
           !l.description.includes("may refer to:"));
 
         if (links.length > 0) {
-          this.linkTypes.push({
-            name: typeName, links: this.links.filter(l =>
-              l.type == typeName &&
-              l.description.length > 0 &&
-              !l.description.includes("may refer to:"))
-          });
+          this.linkTypes.push({ name: typeName, links: links });
         }
       }
 
@@ -161,30 +156,24 @@ export class HomeComponent implements OnInit {
               !l.description.includes("may refer to:"));
 
             if (innerLinks.length > 0) {
-              link.innerLinkTypes.push({
-                name: innerTypeName,
-                links: link.innerSearch.links.filter(l =>
-                  l.type == innerTypeName &&
-                  l.description.length > 0 &&
-                  !l.description.includes("may refer to:"))
-              });
+              link.innerLinkTypes.push({ name: innerTypeName, links: innerLinks });
+            }
+
+            for (let delimiter of delimiters) {
+              innerLinkedText = innerLinkedText.replace(
+                `${delimiter[0]}${innerLink.text}${delimiter[1]}`,
+                `<a target='_blank' class='${innerCss}' href='${innerLink.url}'>${delimiter[0]}${innerLink.text}${delimiter[1]}</a>`
+              );
             }
           }
 
-          for (let delimiter of delimiters) {
-            innerLinkedText = innerLinkedText.replace(
-              `${delimiter[0]}${innerLink.text}${delimiter[1]}`,
-              `<a target='_blank' class='${innerCss}' href='${innerLink.url}'>${delimiter[0]}${innerLink.text}${delimiter[1]}</a>`
-            );
-          }
+          link.linkedDescription = innerLinkedText;
         }
-
-        link.linkedDescription = innerLinkedText;
       }
-    }
 
-    this.wikiLinkedArticle.text = linkedText;
-    this.searchStarted = false;
+      this.wikiLinkedArticle.text = linkedText;
+      this.searchStarted = false;
+    }
   }
 
   private getLinkStyle(type) {
