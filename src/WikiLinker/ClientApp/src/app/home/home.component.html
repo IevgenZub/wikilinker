@@ -76,7 +76,8 @@
                 <button class="btn btn-primary btn-sm float-right left-buffer" (click)="searchDetails(link.description)">
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
-                <button class="btn btn-info btn-sm float-right" (click)="saveArticle(link.text, link.url, link.linkedDescription, type.name)">
+                <button class="btn btn-info btn-sm float-right"
+                        (click)="saveArticle(link.text, link.url, link.linkedDescription, link.imageUrl, type.name)">
                   <fa-icon [icon]="faSave"></fa-icon>
                 </button>
               </div>
@@ -104,7 +105,7 @@
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
                 <button class="btn btn-info btn-sm float-right"
-                        (click)="saveArticle(innerLink.text, innerLink.url, innerLink.description, innerType.name)">
+                        (click)="saveArticle(innerLink.text, innerLink.url, innerLink.description, innerLink.imageUrl, innerType.name)">
                   <fa-icon [icon]="faSave"></fa-icon>
                 </button>
                 <a target="_blank" href="{{ innerLink.url }}">{{ innerLink.text }}</a>
@@ -137,19 +138,41 @@
     </ul>
   </div>
 </div>
+<div class="row">
+  <div class="col-12">
+    <hr />
+  </div>
+</div>
 <!-- Saved articles -->
 <div class="row">
   <div class="col-12">
     <h4>{{ savedArticles.length }} Saved articles </h4>
-    <ul>
-      <li *ngFor="let savedArticle of savedArticles">
-        <a href="{{savedArticle.url}}">{{ savedArticle.text }} ({{ savedArticle.type }})</a>
+  </div>
+  <div class="col-6 top-buffer" *ngFor="let savedArticle of savedArticles">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <a target="_blank" href="{{ savedArticle.url }}">
+          <img style="width:10rem; height:8rem;" class="buttom-buffer" src="{{ savedArticle.imageUrl }}" alt="Smiley face" />
+        </a>
+      </div>
+      <div class="col-12 col-md-8">
+        <button class="btn btn-primary btn-xs float-right py-0 left-buffer" style="font-size: 0.8em;"
+                (click)="searchDetails(savedArticle.text)">
+          <fa-icon [icon]="faSearch"></fa-icon>
+        </button>
         <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
                 (click)="removeSavedArticle(savedArticle.text)">
           <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
         </button>
-      </li>
-    </ul>
+        <a target="_blank" href="{{ savedArticle.url }}">{{ savedArticle.text }} <small>({{ (savedArticle.type)}})</small></a>
+        <div [innerHTML]="savedArticle.description"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <hr />
   </div>
 </div>
 <!-- Search History -->
