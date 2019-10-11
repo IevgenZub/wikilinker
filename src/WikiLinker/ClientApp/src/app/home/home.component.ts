@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { faSearch, faSave, faUndo, faBookOpen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faSave, faUndo, faBookOpen, faTrash, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 
 @Component({
@@ -11,6 +11,8 @@ import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 export class HomeComponent implements OnInit {
   readonly SEARCH_HISTORY_KEY = "WIKILINKER_SEARCH_HISTORY";
   readonly SAVED_ARTICLES_KEY = "WIKILINKER_SAVED_ARTICLES";
+  faArrowUp = faArrowUp;
+  faArrowDown = faArrowDown;
   faTrash = faTrash;
   faBookOpen = faBookOpen;
   faUndo = faUndo;

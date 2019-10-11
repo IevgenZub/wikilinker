@@ -37,7 +37,7 @@
 <div [hidden]=!wikiLinkedArticle.text class="row">
   <div class="col-12">
     <div class="form-group">
-      <div class="card border-primary">
+      <div class="card">
         <div class="card-header">
           <span style="font-size:larger">Search results</span>
           <button class="btn btn-primary float-right left-buffer" (click)="reset()"><fa-icon [icon]="faSearch"></fa-icon> New search</button>
@@ -45,7 +45,6 @@
         <div class="card-body">
           <blockquote class="blockquote mb-0">
             <div [innerHTML]="wikiLinkedArticle.text"></div>
-            <footer class="blockquote-footer">Highlighted with links from <cite title="Source Title">Wikipedia</cite></footer>
           </blockquote>
         </div>
       </div>
@@ -73,12 +72,24 @@
             <div class="card">
               <div class="card-header">
                 <a target="_blank" href="{{ link.url }}"><b>{{ link.text }}</b></a>
-                <button class="btn btn-primary btn-sm float-right left-buffer" (click)="searchDetails(link.description)">
+                <button class="btn btn-light btn-sm float-right" (click)="searchDetails(link.description)">
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
-                <button class="btn btn-info btn-sm float-right"
+                <button class="btn btn-light btn-sm float-right"
                         (click)="saveArticle(link.text, link.url, link.description, link.linkedDescription, link.imageUrl, type.name)">
                   <fa-icon [icon]="faSave"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right"
+                        (click)="removeFromHistory(historyItem.text)">
+                  <fa-icon style="color:gray" [icon]="faArrowDown"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right"
+                        (click)="removeFromHistory(historyItem.text)">
+                  <fa-icon style="color:gray" [icon]="faArrowUp"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right"
+                        (click)="removeFromHistory(historyItem.text)">
+                  <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
                 </button>
               </div>
               <div class="card-body">
@@ -101,12 +112,24 @@
                 </a>
               </div>
               <div class="col-12 col-md-8">
-                <button class="btn btn-primary btn-sm float-right left-buffer py-0" style="font-size: 0.8em;" (click)="searchDetails(innerLink.description)">
+                <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;" (click)="searchDetails(innerLink.description)">
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
-                <button class="btn btn-info btn-sm float-right py-0" style="font-size: 0.8em;"
+                <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;"
                         (click)="saveArticle(innerLink.text, innerLink.url, innerLink.description, innerLink.description, innerLink.imageUrl, innerType.name)">
                   <fa-icon [icon]="faSave"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;"
+                        (click)="removeFromHistory(historyItem.text)">
+                  <fa-icon style="color:gray" [icon]="faArrowDown"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;"
+                        (click)="removeFromHistory(historyItem.text)">
+                  <fa-icon style="color:gray" [icon]="faArrowUp"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;"
+                        (click)="removeFromHistory(historyItem.text)">
+                  <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
                 </button>
                 <a target="_blank" href="{{ innerLink.url }}">{{ innerLink.text }}</a>
                 <p class="small">{{ innerLink.description }}</p>
@@ -126,7 +149,7 @@
 <!-- Words -->
 <div [hidden]=!wikiLinkedArticle.text class="row">
   <div class="col-12">
-    <h4><span class="badge badge-light">{{ words.length }}</span> Entities and phrases detected </h4>
+    <h4>Entities and phrases detected <span class="badge badge-light">{{ words.length }}</span></h4>
   </div>
   <div class="col-6 col-md-4" *ngFor="let type of wordTypes">
     {{ type.name }}
@@ -144,7 +167,7 @@
 </div>
 <!--Saved articles & Search history-->
 <div class="row">
-  <div class="col-12 col-md-6">
+  <div class="col-12 col-md-7">
     <!-- Saved articles -->
     <div class="row top-buffer">
       <div class="col-12">
@@ -153,7 +176,7 @@
             <h4>Saved articles <span class="badge badge-light">{{ savedArticles.length }}</span></h4>
           </div>
           <div class="col-4">
-            <a class="float-right small" [routerLink]="['/saved-articles']">View all...</a>
+            <a class="float-right" [routerLink]="['/saved-articles']">View all...</a>
           </div>
         </div>
       </div>
@@ -165,7 +188,7 @@
             </a>
           </div>
           <div class="col-12 col-md-8">
-            <button class="btn btn-primary btn-xs float-right py-0 left-buffer" style="font-size: 0.8em;"
+            <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
                     (click)="searchDetails(savedArticle.description)">
               <fa-icon [icon]="faSearch"></fa-icon>
             </button>
@@ -180,7 +203,7 @@
       </div>
     </div>
   </div>
-  <div class="col-12 col-md-6">
+  <div class="col-12 col-md-5">
     <!-- Search History -->
     <div class="row top-buffer">
       <div class="col-12">
@@ -189,16 +212,16 @@
             <h4>Search history <span class="badge badge-light">{{ searchHistory.length }}</span></h4>
           </div>
           <div class="col-4">
-            <a class="float-right small" [routerLink]="['/search-history']">View all...</a>
+            <a class="float-right" [routerLink]="['/search-history']">View all...</a>
           </div>
         </div>
         <ul>
           <li *ngFor="let historyItem of searchHistory | slice:0:10">
             <button class="btn btn-link text-left py-0" style="font-size: 0.8em;"
                     (click)="openHistory(historyItem.text)">
-              {{ historyItem.text.length > 100 ? historyItem.text.slice(0, 70) + "..." : historyItem.text}}
+              {{ historyItem.text.length > 100 ? historyItem.text.slice(0, 50) + "..." : historyItem.text}}
             </button>
-            <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
+            <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;"
                     (click)="removeFromHistory(historyItem.text)">
               <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
             </button>
