@@ -8,7 +8,7 @@
   <div class="col-12">
     <form [formGroup]="articleForm" (ngSubmit)="onSubmit(articleForm.value)">
       <div class="form-group">
-        <textarea id="description" rows="3" formControlName="text" class="form-control"
+        <textarea id="description" rows="2" formControlName="text" class="form-control"
                   placeholder="Enter text you want to search in Wiki...">
         </textarea>
       </div>
@@ -146,9 +146,18 @@
 <!-- Saved articles -->
 <div class="row">
   <div class="col-12">
-    <h4>{{ savedArticles.length }} Saved articles </h4>
+    <div class="row">
+      <div class="col-8">
+        <h4>{{ savedArticles.length }} Saved articles </h4>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-info btn-sm float-right py-0" style="font-size: 0.8em;" (click)="showArticles()">
+          View all
+        </button>
+      </div>
+    </div>
   </div>
-  <div class="col-6 top-buffer" *ngFor="let savedArticle of savedArticles">
+  <div class="col-6 top-buffer" *ngFor="let savedArticle of savedArticles | slice:0:2">
     <div class="row">
       <div class="col-12 col-md-4">
         <a target="_blank" href="{{ savedArticle.url }}">
@@ -178,15 +187,24 @@
 <!-- Search History -->
 <div class="row">
   <div class="col-12">
-    <h4>{{ searchHistory.length }} Items in search history </h4>
+    <div class="row">
+      <div class="col-8">
+        <h4>{{ searchHistory.length }} Items in search history </h4>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-info btn-sm float-right py-0" style="font-size: 0.8em;" (click)="showHistory()">
+          View all
+        </button>
+      </div>
+    </div>
     <ul>
-      <li *ngFor="let historyItem of searchHistory">
+      <li *ngFor="let historyItem of searchHistory | slice:0:4">
         <button class="btn btn-link text-left"
                 (click)="openHistory(historyItem.text)">
           <fa-icon [icon]="faBookOpen"></fa-icon>
           {{ historyItem.text.length > 100 ? historyItem.text.slice(0, 120) + "..." : historyItem.text}}
         </button>
-        <button class="btn btn-light btn-xs float-right py-0"  style="font-size: 0.8em;"
+        <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
                 (click)="removeFromHistory(historyItem.text)">
           <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
         </button>
