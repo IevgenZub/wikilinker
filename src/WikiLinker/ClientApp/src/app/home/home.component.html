@@ -1,7 +1,7 @@
 <!--Header-->
 <div class="row">
   <div class="col-12">
-    <h3>Welcome to <b>WikiLinker</b>! <small>Online tool for text based wiki search </small></h3>
+    <h3>Welcome to <b>WikiLinker</b>! <small>Online tool for text-based wiki search </small></h3>
   </div>
 </div>
 <div [hidden]=wikiLinkedArticle.text class="row">
@@ -9,7 +9,7 @@
     <form [formGroup]="articleForm" (ngSubmit)="onSubmit(articleForm.value)">
       <div class="form-group">
         <textarea id="description" rows="2" formControlName="text" class="form-control"
-                  placeholder="Enter text you want to search in Wiki...">
+                  placeholder="Enter the text you want to search in Wiki...">
         </textarea>
       </div>
       <div class="form-group float-right">
