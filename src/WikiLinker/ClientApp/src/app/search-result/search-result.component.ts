@@ -3,6 +3,7 @@ import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { faSave, faTrash, faArrowUp, faArrowDown, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { SEARCH_HISTORY_KEY, SAVED_ARTICLES_KEY } from '../constants';
 
 @Component({
   selector: 'app-search-result',
@@ -10,8 +11,8 @@ import { faSave, faTrash, faArrowUp, faArrowDown, faSearch } from '@fortawesome/
   styleUrls: ['./search-result.component.css']
 })
 export class SearchResultComponent implements OnInit {
-  readonly SEARCH_HISTORY_KEY = "WIKILINKER_SEARCH_HISTORY";
-  readonly SAVED_ARTICLES_KEY = "WIKILINKER_SAVED_ARTICLES";
+  readonly SEARCH_HISTORY_KEY = SEARCH_HISTORY_KEY;
+  readonly SAVED_ARTICLES_KEY = SAVED_ARTICLES_KEY;
   faArrowUp = faArrowUp;
   faArrowDown = faArrowDown;
   faTrash = faTrash;

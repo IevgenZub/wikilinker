@@ -23,7 +23,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
     HomeComponent,
     SavedArticlesComponent,
     SearchHistoryComponent,
-    SearchResultComponent
+    SearchResultComponent    
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

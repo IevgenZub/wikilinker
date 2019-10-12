@@ -1,17 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { faSearch, faUndo, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
-import { Router } from '@angular/router';
+import { SEARCH_HISTORY_KEY, SAVED_ARTICLES_KEY } from '../constants';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  readonly SEARCH_HISTORY_KEY = "WIKILINKER_SEARCH_HISTORY";
-  readonly SAVED_ARTICLES_KEY = "WIKILINKER_SAVED_ARTICLES";
+  readonly SEARCH_HISTORY_KEY = SEARCH_HISTORY_KEY;
+  readonly SAVED_ARTICLES_KEY = SAVED_ARTICLES_KEY;
   faTrash = faTrash;
   faUndo = faUndo;
   faSearch = faSearch;

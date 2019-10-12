@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { StorageService, LOCAL_STORAGE } from 'ngx-webstorage-service';
+import { SEARCH_HISTORY_KEY} from '../constants';
 
 @Component({
   selector: 'app-search-history',
@@ -7,7 +8,7 @@ import { StorageService, LOCAL_STORAGE } from 'ngx-webstorage-service';
   styleUrls: ['./search-history.component.css']
 })
 export class SearchHistoryComponent implements OnInit {
-  readonly SEARCH_HISTORY_KEY = "WIKILINKER_SEARCH_HISTORY";
+  readonly SEARCH_HISTORY_KEY = SEARCH_HISTORY_KEY;
   searchHistory = [];
 
   constructor(
