@@ -78,6 +78,22 @@ export class HomeComponent implements OnInit {
     this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);    
   }
 
+  removeFromHistoryElements(text) {
+    this.searchHistory.forEach((sh, index) => {
+      sh.result.links = sh.result.links.filter(l => l.text != text);
+      sh.result.links.forEach((li, index) => {
+        if (li.innerSearch) {
+          li.innerSearch.links = li.innerSearch.links.filter(inner => inner.text != text);
+        }
+      })
+    });
+
+    this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);
+
+    let historyItem = this.searchHistory.filter(sh => sh.text == this.article.text)[0];
+    this.displaySearchResult(historyItem.result, { text: historyItem.text });
+  }
+
   removeSavedArticle(text) {
     this.savedArticles = this.savedArticles.filter(sh => sh.text != text);
     this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);    
@@ -112,9 +128,10 @@ export class HomeComponent implements OnInit {
   private displaySearchResult(result, articleData) {
     this.wordTypes = [];
     this.linkTypes = [];
-
+    this.article.text = articleData.text;
     this.words = (<any>result).words;
     for (let word of this.words) {
+      word.sort = this.words.indexOf(word);
       let typeName = word.type;
       if (this.wordTypes.filter(w => w.name == typeName).length == 0) {
         this.wordTypes.push({ name: typeName, words: this.words.filter(w => w.type == typeName) });
@@ -148,6 +165,7 @@ export class HomeComponent implements OnInit {
       let innerLinkedText = link.description;
       if (link.innerSearch && innerLinkedText.length > 0) {
         for (let innerLink of link.innerSearch.links) {
+          innerLink.sort = link.innerSearch.links.indexOf(innerLink);
           link.innerLinkTypes = [];
           let innerTypeName = innerLink.type;
           let innerCss = this.getLinkStyle(innerTypeName);
