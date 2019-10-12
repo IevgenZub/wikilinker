@@ -53,6 +53,8 @@ export class HomeComponent implements OnInit {
     } else {
       this.savedArticles = this.storage.get(this.SAVED_ARTICLES_KEY);
     }
+
+    this.articleForm.controls['recursiveSearch'].setValue(false);
   }
 
   onSubmit(articleData) {
