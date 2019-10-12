@@ -176,7 +176,8 @@ export class HomeComponent implements OnInit {
             var innerLinks = link.innerSearch.links.filter(l =>
               l.type == innerTypeName &&
               l.description.length > 0 &&
-              !l.description.includes("may refer to:"));
+              !l.description.includes("may refer to:") &&
+              l.text.toUpperCase() != link.text.toUpperCase());
 
             if (innerLinks.length > 0) {
               link.innerLinkTypes.push({ name: innerTypeName, links: innerLinks });
