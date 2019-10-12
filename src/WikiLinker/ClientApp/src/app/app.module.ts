@@ -14,6 +14,7 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SavedArticlesComponent } from './saved-articles/saved-articles.component';
 import { SearchHistoryComponent } from './search-history/search-history.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SearchHistoryComponent } from './search-history/search-history.componen
     NavMenuComponent,
     HomeComponent,
     SavedArticlesComponent,
-    SearchHistoryComponent
+    SearchHistoryComponent,
+    SearchResultComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -34,6 +36,7 @@ import { SearchHistoryComponent } from './search-history/search-history.componen
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'saved-articles', component: SavedArticlesComponent },
+      { path: 'search-result/:text', component: SearchResultComponent},
       { path: 'search-history', component: SearchHistoryComponent}
     ])
   ],

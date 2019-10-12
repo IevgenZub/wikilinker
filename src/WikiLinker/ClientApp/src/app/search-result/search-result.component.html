@@ -1,0 +1,129 @@
+<!-- Wiki search result -->
+<div [hidden]=!wikiLinkedArticle.text class="row">
+  <div class="col-12">
+    <div class="form-group">
+      <div class="card">
+        <div class="card-header">
+          <span style="font-size:larger">Search results</span>
+          <button class="btn btn-primary float-right left-buffer" (click)="reset()"><fa-icon [icon]="faSearch"></fa-icon> New search</button>
+        </div>
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <div [innerHTML]="wikiLinkedArticle.text"></div>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Links -->
+<div [hidden]=!wikiLinkedArticle.text class="row">
+  <div class="col-12">
+    <h3>Wiki articles <span class="badge badge-light">{{ links.length }}</span></h3>
+  </div>
+  <div class="col-12">
+    <div class="row" *ngFor="let type of linkTypes">
+      <div class="col-12">
+        <h5>{{ type.name }}</h5>
+      </div>
+      <div class="col-12" *ngFor="let link of type.links">
+        <div class="row">
+          <div class="col-12 col-md-2">
+            <a target="_blank" href="{{ link.url }}">
+              <img style="width:10rem; height:9rem;" src="{{ link.imageUrl }}" alt="Smiley face" />
+            </a>
+          </div>
+          <div class="col-12 col-md-10">
+            <div class="card">
+              <div class="card-header">
+                <a target="_blank" href="{{ link.url }}"><b>{{ link.text }}</b></a>
+                <button class="btn btn-light btn-sm float-right" (click)="searchDetails(link.description)">
+                  <fa-icon [icon]="faSearch"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right"
+                        (click)="saveArticle(link.text, link.url, link.description, link.linkedDescription, link.imageUrl, type.name)">
+                  <fa-icon [icon]="faSave"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right"
+                        (click)="sortDown(link.text, type.name)">
+                  <fa-icon style="color:gray" [icon]="faArrowDown"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right"
+                        (click)="sortUp(link.text, type.name)">
+                  <fa-icon style="color:gray" [icon]="faArrowUp"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right"
+                        (click)="removeFromHistoryElements(link.text)">
+                  <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
+                </button>
+              </div>
+              <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                  <div class="small" [innerHTML]="link.linkedDescription"></div>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngFor="let innerType of link.innerLinkTypes">
+          <div class="col-12 top-buffer">
+            <p>{{ innerType.name }}</p>
+          </div>
+          <div class="col-12 col-md-6" *ngFor="let innerLink of innerType.links">
+            <div class="row">
+              <div class="col-12 col-md-3">
+                <a target="_blank" href="{{ innerLink.url }}">
+                  <img style="width:7rem; height:6rem;" src="{{ innerLink.imageUrl }}" alt="Smiley face" />
+                </a>
+              </div>
+              <div class="col-12 col-md-9">
+                <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;" (click)="searchDetails(innerLink.description)">
+                  <fa-icon [icon]="faSearch"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;"
+                        (click)="saveArticle(innerLink.text, innerLink.url, innerLink.description, innerLink.description, innerLink.imageUrl, innerType.name)">
+                  <fa-icon [icon]="faSave"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;"
+                        (click)="sortDown(innerLink.text, innerType.name)">
+                  <fa-icon style="color:gray" [icon]="faArrowDown"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;"
+                        (click)="sortUp(innerLink.text, innerType.name)">
+                  <fa-icon style="color:gray" [icon]="faArrowUp"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;"
+                        (click)="removeFromHistoryElements(innerLink.text)">
+                  <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
+                </button>
+                <a target="_blank" href="{{ innerLink.url }}">{{ innerLink.text }}</a>
+                <p class="small">{{ innerLink.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <hr />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Words -->
+<div [hidden]=!wikiLinkedArticle.text class="row">
+  <div class="col-12">
+    <h3>Entities and phrases detected <span class="badge badge-light">{{ words.length }}</span></h3>
+  </div>
+  <div class="col-6 col-md-4" *ngFor="let type of wordTypes">
+    {{ type.name }}
+    <ul>
+      <li *ngFor="let word of type.words">
+        {{ word.text }}
+      </li>
+    </ul>
+  </div>
+</div>
+
+
