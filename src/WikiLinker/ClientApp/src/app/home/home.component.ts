@@ -151,7 +151,8 @@ export class HomeComponent implements OnInit {
         var links = this.links.filter(l =>
           l.type == typeName &&
           l.description.length > 0 &&
-          !l.description.includes("may refer to:"));
+          !l.description.includes("may refer to:") &&
+          !l.description.includes("commonly refers to:") );
 
         if (links.length > 0) {
           this.linkTypes.push({ name: typeName, links: links });
@@ -177,6 +178,7 @@ export class HomeComponent implements OnInit {
               l.type == innerTypeName &&
               l.description.length > 0 &&
               !l.description.includes("may refer to:") &&
+              !l.description.includes("commonly refers to:") &&
               l.text.toUpperCase() != link.text.toUpperCase());
 
             if (innerLinks.length > 0) {
@@ -190,7 +192,6 @@ export class HomeComponent implements OnInit {
               );
             }
           }
-
         }
       }
 
@@ -204,17 +205,20 @@ export class HomeComponent implements OnInit {
   private getLinkStyle(type) {
     let cssClass = "text-primary";
     switch (type) {
+      case "ORGANIZATION":
+        cssClass = "text-primary";
+        break;
       case "LOCATION":
         cssClass = "text-success";
         break;
       case "DATETIME":
-        cssClass = "text-warning";
-        break;
-      case "OTHER":
         cssClass = "text-secondary";
         break;
-      case "PHRASE":
+      case "OTHER":
         cssClass = "text-info";
+        break;
+      case "PHRASE":
+        cssClass = "text-warning";
         break;
     }
 
