@@ -1,1 +1,15 @@
-<p>search-history works!</p>
+<div class="row">
+  <div class="col-12">
+    <h3>Search history <span class="badge badge-light">{{ searchHistory.length }}</span></h3>
+    <ul>
+      <li *ngFor="let historyItem of searchHistory">
+        <a [routerLink]="['/search-result', historyItem.text]">
+          {{ historyItem.text }}
+        </a>
+        <button class="btn btn-light btn-sm" (click)="removeFromHistory(historyItem.text)">
+          <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
+import { faSave, faTrash, faArrowUp, faArrowDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-search-result',
@@ -11,14 +11,21 @@ import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 })
 export class SearchResultComponent implements OnInit {
   readonly SEARCH_HISTORY_KEY = "WIKILINKER_SEARCH_HISTORY";
+  readonly SAVED_ARTICLES_KEY = "WIKILINKER_SAVED_ARTICLES";
+  faArrowUp = faArrowUp;
+  faArrowDown = faArrowDown;
+  faTrash = faTrash;
+  faSave = faSave;
+  faSearch = faSearch;
   links = [];
   linkTypes = [];
   words = [];
   wordTypes = [];
   searchHistory = [];
-  article: any;
+  savedArticles = [];
   wikiLinkedArticle: any;
-  
+  searchPhrase: string;
+
   constructor(
     @Inject(LOCAL_STORAGE)
     private storage: StorageService,
@@ -31,13 +38,48 @@ export class SearchResultComponent implements OnInit {
       this.searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
     }
 
-    const text: Observable<string> = this.route.params.pipe(map(p => p.text));
-    text.subscribe(result => {
+    if (!this.storage.has(this.SAVED_ARTICLES_KEY)) {
+      this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);
+    } else {
+      this.savedArticles = this.storage.get(this.SAVED_ARTICLES_KEY);
+    }
+
+    this.route.params.pipe(map(p => p.text)).subscribe(result => {
       var match = this.searchHistory.filter(sh => sh.text == result);
       if (match.length == 1) {
+        this.searchPhrase = result;
         this.showResult(match[0].result, match[0].text);
       }
     })
+  }
+
+  saveArticle(text, url, description, linkedDescription, imageUrl, type) {
+    this.savedArticles.push({
+      text: text,
+      url: url,
+      description: description,
+      linkedDescription: linkedDescription,
+      imageUrl: imageUrl,
+      type: type
+    });
+
+    this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);
+  }
+
+  removeFromHistoryElements(text) {
+    this.searchHistory.forEach(sh => {
+      sh.result.links = sh.result.links.filter(l => l.text != text);
+      sh.result.links.forEach(li => {
+        if (li.innerSearch) {
+          li.innerSearch.links = li.innerSearch.links.filter(inner => inner.text != text);
+        }
+      })
+    });
+
+    this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);
+
+    let historyItem = this.searchHistory.filter(sh => sh.text == this.searchPhrase)[0];
+    this.showResult(historyItem.result, historyItem.text);
   }
 
   private showResult(result, text) {
@@ -135,5 +177,4 @@ export class SearchResultComponent implements OnInit {
 
     return cssClass;
   }
-
 }

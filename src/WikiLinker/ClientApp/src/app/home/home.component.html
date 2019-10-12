@@ -4,7 +4,7 @@
     <h3>Welcome to <b>WikiLinker</b>! <small>Online tool for text-based wiki search </small></h3>
   </div>
 </div>
-<div [hidden]=wikiLinkedArticle.text class="row">
+<div class="row">
   <div class="col-12">
     <form [formGroup]="articleForm" (ngSubmit)="onSubmit(articleForm.value)">
       <div class="form-group">
@@ -37,11 +37,16 @@
     &nbsp;<b>WikiLinker</b> is working on your request...
   </div>
 </div>
+<div class="row">
+  <div class="col-12">
+    <hr />
+  </div>
+</div>
 <!--Saved articles & Search history-->
 <div class="row">
   <div class="col-12 col-md-7">
     <!-- Saved articles -->
-    <div class="row top-buffer">
+    <div class="row">
       <div class="col-12">
         <div class="row">
           <div class="col-8">
@@ -77,7 +82,7 @@
   </div>
   <div class="col-12 col-md-5">
     <!-- Search History -->
-    <div class="row top-buffer">
+    <div class="row">
       <div class="col-12">
         <div class="row">
           <div class="col-8">
@@ -89,7 +94,7 @@
         </div>
         <ul>
           <li *ngFor="let historyItem of searchHistory | slice:0:10">
-            <a [routerLink]="['/search-result', historyItem.text]">
+            <a class="small" [routerLink]="['/search-result', historyItem.text]">
               {{ historyItem.text.length > 100 ? historyItem.text.slice(0, 50) + "..." : historyItem.text}}
             </a>
             <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;"

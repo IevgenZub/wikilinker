@@ -5,7 +5,9 @@
       <div class="card">
         <div class="card-header">
           <span style="font-size:larger">Search results</span>
-          <button class="btn btn-primary float-right left-buffer" (click)="reset()"><fa-icon [icon]="faSearch"></fa-icon> New search</button>
+          <button class="btn btn-primary float-right left-buffer" [routerLink]="['/']" >
+            <fa-icon [icon]="faSearch"></fa-icon> New search
+          </button>
         </div>
         <div class="card-body">
           <blockquote class="blockquote mb-0">
@@ -19,7 +21,7 @@
 <!-- Links -->
 <div [hidden]=!wikiLinkedArticle.text class="row">
   <div class="col-12">
-    <h3>Wiki articles <span class="badge badge-light">{{ links.length }}</span></h3>
+    <h2>Wiki articles <span class="badge badge-light">{{ links.length }}</span></h2>
   </div>
   <div class="col-12">
     <div class="row" *ngFor="let type of linkTypes">
