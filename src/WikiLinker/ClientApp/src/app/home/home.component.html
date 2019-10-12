@@ -12,6 +12,10 @@
                   placeholder="Enter the text you want to search in Wiki...">
         </textarea>
       </div>
+      <div class="custom-control custom-checkbox float-left">
+        <input type="checkbox" formControlName="recursiveSearch" class="custom-control-input" id="defaultUnchecked">
+        <label class="custom-control-label" for="defaultUnchecked">Recursive search</label>
+      </div>
       <div class="form-group float-right">
         <button id="button-reset" type="button" [disabled]="searchStarted" class="btn btn-secondary" (click)="reset()">
           <fa-icon [icon]="faUndo"></fa-icon>
@@ -104,7 +108,7 @@
           <div class="col-12 top-buffer">
             <p>{{ innerType.name }}</p>
           </div>
-          <div class="col-6" *ngFor="let innerLink of innerType.links">
+          <div class="col-12 col-md-6" *ngFor="let innerLink of innerType.links">
             <div class="row">
               <div class="col-12 col-md-3">
                 <a target="_blank" href="{{ innerLink.url }}">

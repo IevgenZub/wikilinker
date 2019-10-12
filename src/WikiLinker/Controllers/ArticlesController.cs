@@ -20,7 +20,7 @@ namespace WikiLinker.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(ArticlePostRequest request)
         {
-            var article = await _wikiLinkerService.FindLinksAndImages(request.Text);
+            var article = await _wikiLinkerService.FindLinksAndImages(request.Text, request.RecursiveSearch);
             return Ok(article);
         }
     }

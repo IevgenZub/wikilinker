@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   faSearch = faSearch;
   faSave = faSave;
   searchStarted = false;
-  article = <Article>{};
+  article = <Article> {};
   wikiLinkedArticle = <Article>{};
   links = [];
   linkTypes = [];
@@ -28,7 +28,8 @@ export class HomeComponent implements OnInit {
   searchHistory = [];
   savedArticles = [];
   articleForm = this.formBuilder.group({
-    text: new FormControl(this.article.text, [Validators.required, Validators.minLength(3)])
+    text: new FormControl(this.article.text, [Validators.required, Validators.minLength(3)]),
+    recursiveSearch: new FormControl(this.article.recursiveSearch)
   });
 
   constructor(
@@ -116,6 +117,7 @@ export class HomeComponent implements OnInit {
     if (!this.searchStarted) {
       this.articleForm.reset();
       this.wikiLinkedArticle = <Article>{};
+      this.articleForm.controls['recursiveSearch'].setValue(false);
     }
   }
 
@@ -142,6 +144,7 @@ export class HomeComponent implements OnInit {
     let delimiters = [[" ", " "], [". ", " "], [", ", " "], [" ", "."], [" ", ", "]];
     let linkedText = " " + articleData.text + " ";
     for (let link of this.links) {
+      link.sort = this.links.indexOf(link);
       let typeName = link.type;
       let cssClass = this.getLinkStyle(typeName);
       if (this.linkTypes.filter(l => l.name == typeName).length == 0) {
@@ -187,13 +190,14 @@ export class HomeComponent implements OnInit {
             }
           }
 
-          link.linkedDescription = innerLinkedText;
         }
       }
 
-      this.wikiLinkedArticle.text = linkedText;
-      this.searchStarted = false;
+      link.linkedDescription = innerLinkedText;
     }
+
+    this.wikiLinkedArticle.text = linkedText;
+    this.searchStarted = false;
   }
 
   private getLinkStyle(type) {
@@ -219,4 +223,5 @@ export class HomeComponent implements OnInit {
 
 interface Article {
   text: string;
+  recursiveSearch: boolean;
 }

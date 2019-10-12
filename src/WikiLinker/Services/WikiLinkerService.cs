@@ -19,7 +19,7 @@ namespace WikiLinker.Services
         private readonly TextAnalyticsClient _client = new TextAnalyticsClient(
             new ApiKeyServiceClientCredentials(AzureTextAnalyticsKey)) { Endpoint = AzureTextAnalyticsEndpoint };
 
-        public async Task<string> FindLinksAndImages(string input, int recursionLevel = 0)
+        public async Task<string> FindLinksAndImages(string input, bool recursiveSearch, int recursionLevel = 0)
         {
             var photos = new List<dynamic>();
             var links = new List<dynamic>();
@@ -85,9 +85,9 @@ namespace WikiLinker.Services
 
                     string innerSearchRaw = null;
                     object innerSearch = null;
-                    if (recursionLevel == 0 && description.Length > 30)
+                    if (recursiveSearch && recursionLevel == 0 && description.Length > 30)
                     {
-                        innerSearchRaw = await FindLinksAndImages(description, recursionLevel + 1);
+                        innerSearchRaw = await FindLinksAndImages(description, recursiveSearch, recursionLevel + 1);
                         innerSearch = JsonConvert.DeserializeObject(innerSearchRaw);
                     }
 
