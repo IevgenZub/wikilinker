@@ -1,10 +1,10 @@
 <div class="row top-buffer">
-  <div class="col-4">
+  <div class="col-{{miniSize? 3 : 4}}">
     <a target="_blank" href="{{ article.url }}">
-      <img style="width:9rem; height:7rem;" class="bottom-buffer float-right" src="{{ article.imageUrl }}" alt="Smiley face" />
+      <img style="width:9rem; height:7rem;" class="bottom-buffer" src="{{ article.imageUrl }}" alt="Smiley face" />
     </a>
   </div>
-  <div class="col-8">
+  <div class="col-{{miniSize? 9 : 8}}">
     <button class="btn btn-light btn-sm float-right">
       <fa-icon style="color:gray" [icon]="faSearch"></fa-icon>
     </button>

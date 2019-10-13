@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { faSearch, faSave, faUndo, faBookOpen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { SAVED_ARTICLES_KEY } from '../constants';
@@ -9,6 +9,7 @@ import { SAVED_ARTICLES_KEY } from '../constants';
   styleUrls: ['./saved-articles.component.css']
 })
 export class SavedArticlesComponent implements OnInit {
+  @Input() miniSize: boolean = false;
   readonly SAVED_ARTICLES_KEY = SAVED_ARTICLES_KEY;
   savedArticles = [];
   articleTypes = [];

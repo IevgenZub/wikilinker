@@ -10,6 +10,7 @@ import { SAVED_ARTICLES_KEY } from '../constants';
 })
 export class ArticleComponent implements OnInit {
   @Input() article: Article;
+  @Input() miniSize: boolean = false;
   readonly SAVED_ARTICLES_KEY = SAVED_ARTICLES_KEY;
   faTrash = faTrash;
   faSearch = faSearch;
