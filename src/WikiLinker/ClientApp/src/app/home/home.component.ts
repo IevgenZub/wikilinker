@@ -17,9 +17,8 @@ export class HomeComponent implements OnInit {
   faUndo = faUndo;
   faSearch = faSearch;
   searchStarted = false;
-  article = <Article> {};
   searchHistory = [];
-  savedArticles = [];
+  article = <Article> {};
   articleForm = this.formBuilder.group({
     text: new FormControl(this.article.text, [Validators.required, Validators.minLength(3)]),
     recursiveSearch: new FormControl(this.article.recursiveSearch)
@@ -42,12 +41,6 @@ export class HomeComponent implements OnInit {
       this.searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
     }
 
-    if (!this.storage.has(this.SAVED_ARTICLES_KEY)) {
-      this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);
-    } else {
-      this.savedArticles = this.storage.get(this.SAVED_ARTICLES_KEY);
-    }
-
     this.articleForm.controls['recursiveSearch'].setValue(false);
   }
 
@@ -63,27 +56,11 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  removeFromHistory(text) {
-    this.searchHistory = this.searchHistory.filter(sh => sh.text != text);
-    this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);    
-  }
-
-  removeSavedArticle(text) {
-    this.savedArticles = this.savedArticles.filter(sh => sh.text != text);
-    this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);    
-  }
-
   reset() {
     if (!this.searchStarted) {
       this.articleForm.reset();
       this.articleForm.controls['recursiveSearch'].setValue(false);
     }
-  }
-
-  searchDetails(text) {
-    this.article.text = text;
-    this.articleForm.controls['text'].setValue(text);
-    this.onSubmit({ text: text });
   }
 }
 

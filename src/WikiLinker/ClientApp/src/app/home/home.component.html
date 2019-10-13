@@ -44,65 +44,15 @@
 </div>
 <!--Saved articles & Search history-->
 <div class="row">
-  <div class="col-12 col-md-7">
+  <div class="col-12 small col-md-7">
     <!-- Saved articles -->
-    <div class="row">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-8">
-            <h4>Saved articles <span class="badge badge-light">{{ savedArticles.length }}</span></h4>
-          </div>
-          <div class="col-4">
-            <a class="float-right" [routerLink]="['/saved-articles']">View all...</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 top-buffer" *ngFor="let savedArticle of savedArticles | slice:0:2">
-        <div class="row">
-          <div class="col-12 col-md-3">
-            <a target="_blank" href="{{ savedArticle.url }}">
-              <img style="width:9rem; height:8rem;" class="bottom-buffer" src="{{ savedArticle.imageUrl }}" alt="Smiley face" />
-            </a>
-          </div>
-          <div class="col-12 col-md-9">
-            <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
-                    (click)="searchDetails(savedArticle.description)">
-              <fa-icon [icon]="faSearch"></fa-icon>
-            </button>
-            <button class="btn btn-light btn-xs float-right py-0" style="font-size: 0.8em;"
-                    (click)="removeSavedArticle(savedArticle.text)">
-              <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
-            </button>
-            <a target="_blank" href="{{ savedArticle.url }}">{{ savedArticle.text }} <small>({{ (savedArticle.type)}})</small></a>
-            <div class="small" [innerHTML]="savedArticle.linkedDescription"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <saved-articles></saved-articles>
   </div>
   <div class="col-12 col-md-5">
     <!-- Search History -->
     <div class="row">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-8">
-            <h4>Search history <span class="badge badge-light">{{ searchHistory.length }}</span></h4>
-          </div>
-          <div class="col-4">
-            <a class="float-right" [routerLink]="['/search-history']">View all...</a>
-          </div>
-        </div>
-        <ul>
-          <li *ngFor="let historyItem of searchHistory | slice:0:10">
-            <a class="small" [routerLink]="['/search-result', historyItem.text]">
-              {{ historyItem.text.length > 100 ? historyItem.text.slice(0, 50) + "..." : historyItem.text}}
-            </a>
-            <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;"
-                    (click)="removeFromHistory(historyItem.text)">
-              <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
-            </button>
-          </li>
-        </ul>
+      <div class="col-12 small">
+        <search-history></search-history>
       </div>
     </div>
   </div>

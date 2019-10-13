@@ -3,7 +3,7 @@ import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { faSearch, faSave, faUndo, faBookOpen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-saved-articles',
+  selector: 'saved-articles',
   templateUrl: './saved-articles.component.html',
   styleUrls: ['./saved-articles.component.css']
 })

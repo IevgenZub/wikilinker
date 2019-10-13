@@ -6,7 +6,7 @@
         <a [routerLink]="['/search-result', historyItem.text]">
           {{ historyItem.text }}
         </a>
-        <button class="btn btn-light btn-sm" (click)="removeFromHistory(historyItem.text)">
+        <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;" (click)="removeFromHistory(historyItem.text)">
           <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
         </button>
       </li>
