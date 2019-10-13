@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { faSearch, faSave, faUndo, faBookOpen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { SAVED_ARTICLES_KEY } from '../constants';
 
 @Component({
   selector: 'saved-articles',
@@ -8,7 +9,7 @@ import { faSearch, faSave, faUndo, faBookOpen, faTrash } from '@fortawesome/free
   styleUrls: ['./saved-articles.component.css']
 })
 export class SavedArticlesComponent implements OnInit {
-  readonly SAVED_ARTICLES_KEY = "WIKILINKER_SAVED_ARTICLES";
+  readonly SAVED_ARTICLES_KEY = SAVED_ARTICLES_KEY;
   savedArticles = [];
   articleTypes = [];
   faTrash = faTrash;
@@ -37,6 +38,8 @@ export class SavedArticlesComponent implements OnInit {
 
   removeSavedArticle(text) {
     this.savedArticles = this.savedArticles.filter(sh => sh.text != text);
+    this.articleTypes.forEach(at => at.articles = at.articles.filter(a => a.text != text));
+    this.articleTypes = this.articleTypes.filter(at => at.articles.length > 0);
     this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);
   }
 }
