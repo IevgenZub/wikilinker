@@ -15,6 +15,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SavedArticlesComponent } from './saved-articles/saved-articles.component';
 import { SearchHistoryComponent } from './search-history/search-history.component';
 import { SearchResultComponent } from './search-result/search-result.component';
+import { ArticleComponent } from './article/article.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SearchResultComponent } from './search-result/search-result.component';
     HomeComponent,
     SavedArticlesComponent,
     SearchHistoryComponent,
-    SearchResultComponent    
+    SearchResultComponent,
+    ArticleComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

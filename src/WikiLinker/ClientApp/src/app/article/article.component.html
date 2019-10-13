@@ -1,0 +1,31 @@
+<div class="row top-buffer">
+  <div class="col-3">
+    <a target="_blank" href="{{ article.url }}">
+      <img style="width:9rem; height:7rem;" class="bottom-buffer" src="{{ article.imageUrl }}" alt="Smiley face" />
+    </a>
+  </div>
+  <div class="col-9">
+    <button class="btn btn-light btn-sm float-right">
+      <fa-icon style="color:gray" [icon]="faSearch"></fa-icon>
+    </button>
+    <button class="btn btn-light btn-sm float-right"
+            (click)="removeSavedArticle(article.text)">
+      <fa-icon style="color:gray" [icon]="faArrowUp"></fa-icon>
+    </button>
+    <button class="btn btn-light btn-sm float-right"
+            (click)="removeSavedArticle(article.text)">
+      <fa-icon style="color:gray" [icon]="faArrowDown"></fa-icon>
+    </button>
+    <button class="btn btn-light btn-sm float-right"
+            (click)="removeSavedArticle(article.text)">
+      <fa-icon style="color:gray" [icon]="faSave"></fa-icon>
+    </button>
+    <button class="btn btn-light btn-sm float-right"
+            (click)="removeSavedArticle(article.text)">
+      <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
+    </button>
+    <a target="_blank" href="{{ article.url }}">{{ article.text }}</a>
+    <div [hidden]="!article.linkedDescription" [innerHTML]="article.linkedDescription"></div>
+    <div [hidden]="article.linkedDescription" [innerHTML]="article.description"></div>
+  </div>
+</div>

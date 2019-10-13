@@ -12,8 +12,6 @@ export class SavedArticlesComponent implements OnInit {
   readonly SAVED_ARTICLES_KEY = SAVED_ARTICLES_KEY;
   savedArticles = [];
   articleTypes = [];
-  faTrash = faTrash;
-  faSearch = faSearch;
   
   constructor(
     @Inject(LOCAL_STORAGE)

@@ -8,24 +8,7 @@
         <h5>{{ articleType.name }}</h5>
       </div>
       <div class="col-12" *ngFor="let savedArticle of articleType.articles">
-        <div class="row top-buffer">
-          <div class="col-3">
-            <a target="_blank" href="{{ savedArticle.url }}">
-              <img style="width:9rem; height:7rem;" class="bottom-buffer" src="{{ savedArticle.imageUrl }}" alt="Smiley face" />
-            </a>
-          </div>
-          <div class="col-9">
-            <button class="btn btn-light btn-sm float-right">
-              <fa-icon [icon]="faSearch"></fa-icon>
-            </button>
-            <button class="btn btn-light btn-sm float-right"
-                    (click)="removeSavedArticle(savedArticle.text)">
-              <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
-            </button>
-            <a target="_blank" href="{{ savedArticle.url }}">{{ savedArticle.text }}</a>
-            <div [innerHTML]="savedArticle.linkedDescription"></div>
-          </div>
-        </div>
+        <app-article [article]="savedArticle" ></app-article>
       </div>
     </div>
   </div>

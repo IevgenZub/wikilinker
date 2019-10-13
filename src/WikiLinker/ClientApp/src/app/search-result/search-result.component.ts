@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { faSave, faTrash, faArrowUp, faArrowDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { SEARCH_HISTORY_KEY, SAVED_ARTICLES_KEY } from '../constants';
+import { Article } from '../article';
 
 @Component({
   selector: 'app-search-result',
@@ -23,7 +24,7 @@ export class SearchResultComponent implements OnInit {
   words = [];
   wordTypes = [];
   searchHistory = [];
-  savedArticles = [];
+  savedArticles: Article [] = [];
   wikiLinkedArticle: any;
   searchPhrase: string;
 
@@ -54,18 +55,7 @@ export class SearchResultComponent implements OnInit {
     })
   }
 
-  saveArticle(text, url, description, linkedDescription, imageUrl, type) {
-    this.savedArticles.push({
-      text: text,
-      url: url,
-      description: description,
-      linkedDescription: linkedDescription,
-      imageUrl: imageUrl,
-      type: type
-    });
 
-    this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);
-  }
 
   removeFromHistoryElements(text) {
     this.searchHistory.forEach(sh => {
