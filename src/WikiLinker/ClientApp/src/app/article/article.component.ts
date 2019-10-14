@@ -13,12 +13,8 @@ export class ArticleComponent implements OnInit {
   @Input() miniSize: boolean = false;
   faSave = faSave;
   
-  constructor(private articleService: ArticleService) { }
+  constructor() { }
 
   ngOnInit() {
-  }
-
-  saveArticle() {
-    this.articleService.saveArticle(this.article);
   }
 }

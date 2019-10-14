@@ -15,8 +15,19 @@ export class SearchHistoryService {
   }
 
   deleteHistory(text) {
-    var searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
+    let searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
     searchHistory = searchHistory.filter(sh => sh.text != text);
+    this.storage.set(this.SEARCH_HISTORY_KEY, searchHistory);
+  }
+
+  deleteArticleFromHistory(historyText, articleText) {
+    let searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
+    let historyItem = searchHistory.filter(sh => sh.text == historyText)[0];
+    historyItem.result.links = historyItem.result.links.filter(hi => hi.text != articleText);
+    historyItem.result.links.forEach(link => {
+      link.innerSearch.links = link.innerSearch.links.filter(hi => hi.text != articleText);
+    });
+
     this.storage.set(this.SEARCH_HISTORY_KEY, searchHistory);
   }
 

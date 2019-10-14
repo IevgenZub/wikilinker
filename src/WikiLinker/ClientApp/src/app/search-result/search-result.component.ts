@@ -6,6 +6,7 @@ import { faSave, faTrash, faArrowUp, faArrowDown, faSearch } from '@fortawesome/
 import { SEARCH_HISTORY_KEY, SAVED_ARTICLES_KEY } from '../constants';
 import { Article } from '../article';
 import { SearchHistoryService } from '../search-history.service';
+import { ArticleService } from '../article.service';
 
 @Component({
   selector: 'app-search-result',
@@ -14,6 +15,8 @@ import { SearchHistoryService } from '../search-history.service';
 })
 export class SearchResultComponent implements OnInit {
   faSearch = faSearch;
+  faSave = faSave;
+  faTrash = faTrash;
   linkTypes = [];
   links = [];
   wordTypes = [];
@@ -23,16 +26,31 @@ export class SearchResultComponent implements OnInit {
 
   constructor(
     private searchHistoryService: SearchHistoryService,
+    private articleService: ArticleService,
     private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.params.pipe(map(p => p.text)).subscribe(result => {
-      var match = this.searchHistoryService.getSearchHistory().filter(sh => sh.text == result);
-      if (match.length == 1) {
-        this.searchPhrase = result;
-        this.showResult(match[0].result, match[0].text);
-      }
+      this.refresh(result);
     })
+  }
+
+  
+  private refresh(historyText) {
+    var match = this.searchHistoryService.getSearchHistory().filter(sh => sh.text == historyText);
+    if (match.length == 1) {
+      this.searchPhrase = historyText;
+      this.showResult(match[0].result, match[0].text);
+    }
+  }
+
+  private removeArticleFromHistory(historyText: string, articleText: string) {
+    this.searchHistoryService.deleteArticleFromHistory(historyText, articleText);
+    this.refresh(historyText);
+  }
+
+  private saveArticle(article: Article) {
+    this.articleService.saveArticle(article);
   }
 
   private showResult(result, text) {
