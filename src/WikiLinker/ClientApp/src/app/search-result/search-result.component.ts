@@ -69,7 +69,6 @@ export class SearchResultComponent implements OnInit {
     let delimiters = [[" ", " "], [". ", " "], [", ", " "], [" ", "."], [" ", ", "]];
     let linkedText = " " + text + " ";
     for (let link of this.links) {
-      link.sort = this.links.indexOf(link);
       let typeName = link.type;
       let cssClass = this.getLinkStyle(typeName);
       if (this.linkTypes.filter(l => l.name == typeName).length == 0) {
@@ -93,9 +92,8 @@ export class SearchResultComponent implements OnInit {
 
       let innerLinkedText = link.description;
       if (link.innerSearch && innerLinkedText.length > 0) {
+        link.innerLinkTypes = [];
         for (let innerLink of link.innerSearch.links) {
-          innerLink.sort = link.innerSearch.links.indexOf(innerLink);
-          link.innerLinkTypes = [];
           let innerTypeName = innerLink.type;
           let innerCss = this.getLinkStyle(innerTypeName);
           if (link.innerLinkTypes.filter(l => l.name == innerTypeName).length == 0) {
