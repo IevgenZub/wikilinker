@@ -14,6 +14,12 @@ export class SearchHistoryService {
     } 
   }
 
+  deleteHistory(text) {
+    var searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
+    searchHistory = searchHistory.filter(sh => sh.text != text);
+    this.storage.set(this.SEARCH_HISTORY_KEY, searchHistory);
+  }
+
   saveHistory(historyItem) {
     var searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
     searchHistory.push(historyItem);
