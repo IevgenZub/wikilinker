@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { faSave, faTrash, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Article } from '../article';
 import { SearchHistoryService } from '../search-history.service';
 import { ArticleService } from '../article.service';
 import { SearchHistoryItem } from '../search-history-item';
+import { faSave, faTrash, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-result',
