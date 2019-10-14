@@ -24,4 +24,10 @@ export class ArticleService {
     savedArticles.push(article);
     this.storage.set(this.SAVED_ARTICLES_KEY, savedArticles);
   }
+
+  deleteArticle(text: string) {
+    var savedArticles = this.storage.get(this.SAVED_ARTICLES_KEY);
+    savedArticles =  savedArticles.filter(sa => sa.text != text);
+    this.storage.set(this.SAVED_ARTICLES_KEY, savedArticles);
+  }
 }

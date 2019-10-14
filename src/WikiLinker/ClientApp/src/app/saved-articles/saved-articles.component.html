@@ -5,10 +5,13 @@
   <div class="col-12">
     <div class="row" *ngFor="let articleType of articleTypes">
       <div class="col-12">
-        <h5>{{ articleType.name }}</h5>
+        <h5 class="{{miniSize ? 'small' : '' }}">{{ articleType.name }}</h5>
       </div>
       <div class="col-12 col-md-{{ miniSize ? 12 : 6 }}" *ngFor="let savedArticle of articleType.articles">
-        <app-article [article]="savedArticle" [miniSize]="miniSize" ></app-article>
+        <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;" (click)="deleteArticle(savedArticle.text)">
+          <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
+        </button>
+        <app-article [article]="savedArticle" [miniSize]="miniSize"></app-article>
       </div>
     </div>
   </div>
