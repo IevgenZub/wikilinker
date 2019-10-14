@@ -26,7 +26,9 @@ export class SearchHistoryService {
     let historyItem = searchHistory.filter(sh => sh.text == historyText)[0];
     historyItem.links = historyItem.links.filter(hi => hi.text != articleText);
     historyItem.links.forEach(link => {
-      link.innerSearch.links = link.innerSearch.links.filter(hi => hi.text != articleText);
+      if (link.innerSearch) {
+        link.innerSearch.links = link.innerSearch.links.filter(hi => hi.text != articleText);
+      }
     });
 
     this.storage.set(this.SEARCH_HISTORY_KEY, searchHistory);

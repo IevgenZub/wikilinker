@@ -41,6 +41,7 @@ export class HomeComponent implements OnInit {
       result => {
         this.searcHistoryService.saveHistory({
           text: searchData.text,
+          date: new Date(),
           links: (<any>result).links,
           words: (<any>result).words
         });

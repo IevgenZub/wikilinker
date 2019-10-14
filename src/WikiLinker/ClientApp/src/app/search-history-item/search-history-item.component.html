@@ -1,15 +1,24 @@
 <div class="{{miniSize ? 'small' : ''}}">
+  <button [hidden]="expanded" class="btn btn-light btn-sm py-0" (click)="toggle()" style="font-size: 0.8em;">
+    <fa-icon [icon]="faPlus"></fa-icon>
+  </button>
+  <button [hidden]="!expanded" (click)="toggle()" class="btn btn-light btn-sm py-0" style="font-size: 0.8em;">
+    <fa-icon [icon]="faMinus"></fa-icon>
+  </button>
+  <i>{{ historyItem.date | date: 'short' }}</i>
   <a [routerLink]="['/search-result', historyItem.text]">
-    {{ historyItem.text }}
+    {{ historyItem.text.length > 75 ? historyItem.text.slice(0, miniSize ? 75 : 140) + "..." : historyItem.text }}
   </a>
-  <ul>
-    <li *ngFor="let type of linkTypes">
-      {{type.name}}
-      <ul>
-        <li *ngFor="let article of type.links">
-          <a target="_blank" href="{{article.url}}">{{ article.text }}</a>
-        </li>
-      </ul>
-    </li>
-  </ul>
+  <div [hidden]="!expanded">
+    <ul>
+      <li *ngFor="let type of linkTypes">
+        {{type.name}}
+        <ul>
+          <li *ngFor="let article of type.links">
+            <a target="_blank" href="{{ article.url }}">{{ article.text }}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 </div>

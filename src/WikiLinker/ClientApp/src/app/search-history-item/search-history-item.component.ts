@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SearchHistoryItem } from '../search-history-item';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { expand } from 'rxjs/operators';
 
 @Component({
   selector: 'search-history-item',
@@ -9,7 +11,10 @@ import { SearchHistoryItem } from '../search-history-item';
 export class SearchHistoryItemComponent implements OnInit {
   @Input() historyItem: SearchHistoryItem;
   @Input() miniSize: boolean = false;
+  expanded: boolean = false;
   linkTypes: any[] = [];
+  faPlus = faPlus;
+  faMinus = faMinus;
 
   constructor() { }
 
@@ -23,5 +28,9 @@ export class SearchHistoryItemComponent implements OnInit {
         }
       }
     });
+  }
+
+  toggle() {
+    this.expanded = !this.expanded;
   }
 }
