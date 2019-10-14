@@ -106,6 +106,7 @@ export class SearchResultComponent implements OnInit {
               link.innerLinkTypes.push({ name: innerTypeName, links: innerLinks });
             }
 
+            innerLinkedText = " " + innerLinkedText + " ";
             for (let delimiter of delimiters) {
               innerLinkedText = innerLinkedText.replace(
                 `${delimiter[0]}${innerLink.text}${delimiter[1]}`,

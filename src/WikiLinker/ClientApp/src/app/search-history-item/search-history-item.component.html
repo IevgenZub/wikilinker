@@ -7,7 +7,7 @@
   </button>
   <i>{{ historyItem.date | date: 'short' }}</i>
   <a [routerLink]="['/search-result', historyItem.text]">
-    {{ historyItem.text.length > 75 ? historyItem.text.slice(0, miniSize ? 75 : 140) + "..." : historyItem.text }}
+    {{ historyItem.text.length > 75 ? historyItem.text.slice(0, miniSize ? 50 : 120) + "..." : historyItem.text }}
   </a>
   <div [hidden]="!expanded">
     <ul>

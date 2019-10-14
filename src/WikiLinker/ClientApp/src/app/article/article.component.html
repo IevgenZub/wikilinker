@@ -1,11 +1,11 @@
 <div class="row bottom-buffer {{miniSize ? 'small' : ''}}">
   <div class="col-4">
-    <a class="text-secondary" [routerLink]="['/article-details', article.text]">
+    <a [routerLink]="['/article-details', article.text]">
       <img class="bottom-buffer mw-100 mh-100" src="{{ article.imageUrl }}" alt="Smiley face" />
     </a>
   </div>
   <div class="col-8">
-    <a [routerLink]="['/article-details', article.text]">{{ article.text }}</a>
+    <a class="font-weight-bolder" [routerLink]="['/article-details', article.text]">{{ article.text }}</a>
     <div [hidden]="!article.linkedDescription" [innerHTML]="article.linkedDescription"></div>
     <div [hidden]="article.linkedDescription" [innerHTML]="article.description"></div>
   </div>
