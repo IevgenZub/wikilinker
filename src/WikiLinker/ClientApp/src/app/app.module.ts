@@ -19,6 +19,7 @@ import { ArticleComponent } from './article/article.component';
 import { ArticleService } from './article.service';
 import { SearchHistoryService } from './search-history.service';
 import { SearchHistoryItemComponent } from './search-history-item/search-history-item.component';
+import { ArticleDetailsComponent } from './article-details/article-details.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { SearchHistoryItemComponent } from './search-history-item/search-history
     SearchHistoryComponent,
     SearchResultComponent,
     ArticleComponent,
-    SearchHistoryItemComponent
+    SearchHistoryItemComponent,
+    ArticleDetailsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -42,12 +44,15 @@ import { SearchHistoryItemComponent } from './search-history-item/search-history
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'saved-articles', component: SavedArticlesComponent },
-      { path: 'search-result/:text', component: SearchResultComponent},
+      { path: 'search-result/:text', component: SearchResultComponent },
+      { path: 'article-details/:text', component: ArticleDetailsComponent },
       { path: 'search-history', component: SearchHistoryComponent}
     ])
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }, ArticleService, SearchHistoryService
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
+    ArticleService,
+    SearchHistoryService
   ],
   bootstrap: [AppComponent]
 })

@@ -9,7 +9,7 @@ import { Article } from '../article';
 export class ArticleComponent implements OnInit {
   @Input() article: Article;
   @Input() miniSize: boolean = false;
-  
+
   constructor() { }
 
   ngOnInit() {
