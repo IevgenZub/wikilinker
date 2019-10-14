@@ -1,9 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
-import { faSave, faTrash, faArrowUp, faArrowDown, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { SEARCH_HISTORY_KEY, SAVED_ARTICLES_KEY } from '../constants';
+import { faSave, faTrash, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Article } from '../article';
 import { SearchHistoryService } from '../search-history.service';
 import { ArticleService } from '../article.service';
@@ -35,22 +33,21 @@ export class SearchResultComponent implements OnInit {
     })
   }
 
-  
+  removeArticleFromHistory(historyText: string, articleText: string) {
+    this.searchHistoryService.deleteArticleFromHistory(historyText, articleText);
+    this.refresh(historyText);
+  }
+
+  saveArticle(article: Article) {
+    this.articleService.saveArticle(article);
+  }
+
   private refresh(historyText) {
     var match = this.searchHistoryService.getSearchHistory().filter(sh => sh.text == historyText);
     if (match.length == 1) {
       this.searchPhrase = historyText;
       this.showResult(match[0].result, match[0].text);
     }
-  }
-
-  private removeArticleFromHistory(historyText: string, articleText: string) {
-    this.searchHistoryService.deleteArticleFromHistory(historyText, articleText);
-    this.refresh(historyText);
-  }
-
-  private saveArticle(article: Article) {
-    this.articleService.saveArticle(article);
   }
 
   private showResult(result, text) {
