@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { StorageService, LOCAL_STORAGE } from 'ngx-webstorage-service';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { SearchHistoryService } from '../search-history.service';
@@ -9,6 +9,7 @@ import { SearchHistoryService } from '../search-history.service';
   styleUrls: ['./search-history.component.css']
 })
 export class SearchHistoryComponent implements OnInit {
+  @Input() miniSize: boolean = false;
   faTrash = faTrash;
   searchHistory = [];
 

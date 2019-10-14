@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Article } from '../article';
-import { ArticleService } from '../article.service';
-import { faSave } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-article',
@@ -11,7 +9,6 @@ import { faSave } from '@fortawesome/free-solid-svg-icons';
 export class ArticleComponent implements OnInit {
   @Input() article: Article;
   @Input() miniSize: boolean = false;
-  faSave = faSave;
   
   constructor() { }
 

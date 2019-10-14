@@ -3,12 +3,10 @@
     <h3>Search history <span class="badge badge-light">{{ searchHistory.length }}</span></h3>
     <ul>
       <li *ngFor="let historyItem of searchHistory">
-        <a [routerLink]="['/search-result', historyItem.text]">
-          {{ historyItem.text }}
-        </a>
         <button class="btn btn-light btn-sm float-right py-0" style="font-size: 0.8em;" (click)="deleteHistory(historyItem.text)">
           <fa-icon style="color:gray" [icon]="faTrash"></fa-icon>
         </button>
+        <search-history-item [historyItem]="historyItem" [miniSize]="miniSize"></search-history-item>
       </li>
     </ul>
   </div>

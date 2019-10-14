@@ -18,6 +18,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
 import { ArticleComponent } from './article/article.component';
 import { ArticleService } from './article.service';
 import { SearchHistoryService } from './search-history.service';
+import { SearchHistoryItemComponent } from './search-history-item/search-history-item.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { SearchHistoryService } from './search-history.service';
     SavedArticlesComponent,
     SearchHistoryComponent,
     SearchResultComponent,
-    ArticleComponent
+    ArticleComponent,
+    SearchHistoryItemComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

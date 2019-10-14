@@ -1,0 +1,15 @@
+<div class="{{miniSize ? 'small' : ''}}">
+  <a [routerLink]="['/search-result', historyItem.text]">
+    {{ historyItem.text }}
+  </a>
+  <ul>
+    <li *ngFor="let type of linkTypes">
+      {{type.name}}
+      <ul>
+        <li *ngFor="let article of type.links">
+          <a target="_blank" href="{{article.url}}">{{ article.text }}</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

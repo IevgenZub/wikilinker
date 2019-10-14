@@ -6,4 +6,6 @@ export class Article {
   linkedDescription: string;
   type: string;
   saved: boolean = false;
+  innerSearch: any;
+  innerLinkTypes: any [];
 }

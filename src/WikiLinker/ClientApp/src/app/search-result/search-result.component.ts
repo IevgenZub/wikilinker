@@ -5,6 +5,7 @@ import { faSave, faTrash, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Article } from '../article';
 import { SearchHistoryService } from '../search-history.service';
 import { ArticleService } from '../article.service';
+import { SearchHistoryItem } from '../search-history-item';
 
 @Component({
   selector: 'app-search-result',
@@ -16,9 +17,9 @@ export class SearchResultComponent implements OnInit {
   faSave = faSave;
   faTrash = faTrash;
   linkTypes = [];
-  links = [];
+  linksCount = 0;
   wordTypes = [];
-  words = [];
+  wordsCount = 0;
   wikiLinkedArticle: any;
   searchPhrase: string;
 
@@ -46,30 +47,30 @@ export class SearchResultComponent implements OnInit {
     var match = this.searchHistoryService.getSearchHistory().filter(sh => sh.text == historyText);
     if (match.length == 1) {
       this.searchPhrase = historyText;
-      this.showResult(match[0].result, match[0].text);
+      this.showResult(match[0]);
     }
   }
 
-  private showResult(result, text) {
+  private showResult(historyItem: SearchHistoryItem) {
     this.wordTypes = [];
     this.linkTypes = [];
-    let words = (<any>result).words;
-    for (let word of words) {
-      word.sort = words.indexOf(word);
+    this.linksCount = historyItem.links.length;
+    this.wordsCount = historyItem.words.length;
+
+    for (let word of historyItem.words) {
       let typeName = word.type;
       if (this.wordTypes.filter(w => w.name == typeName).length == 0) {
-        this.wordTypes.push({ name: typeName, words: words.filter(w => w.type == typeName) });
+        this.wordTypes.push({ name: typeName, words: historyItem.words.filter(w => w.type == typeName) });
       }
     }
 
-    this.links = (<any>result).links;
     let delimiters = [[" ", " "], [". ", " "], [", ", " "], [" ", "."], [" ", ", "]];
-    let linkedText = " " + text + " ";
-    for (let link of this.links) {
+    let linkedText = " " + historyItem.text + " ";
+    for (let link of historyItem.links) {
       let typeName = link.type;
       let cssClass = this.getLinkStyle(typeName);
       if (this.linkTypes.filter(l => l.name == typeName).length == 0) {
-        var matchingLinks = this.links.filter(l =>
+        var matchingLinks = historyItem.links.filter(l =>
           l.type == typeName &&
           l.description.length > 0 &&
           !l.description.includes("may refer to:") &&

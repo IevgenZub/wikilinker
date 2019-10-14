@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { StorageService, LOCAL_STORAGE } from 'ngx-webstorage-service';
 import { SEARCH_HISTORY_KEY } from './constants';
+import { SearchHistoryItem } from './search-history-item';
 
 @Injectable({
   providedIn: 'root'
@@ -23,15 +24,15 @@ export class SearchHistoryService {
   deleteArticleFromHistory(historyText, articleText) {
     let searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
     let historyItem = searchHistory.filter(sh => sh.text == historyText)[0];
-    historyItem.result.links = historyItem.result.links.filter(hi => hi.text != articleText);
-    historyItem.result.links.forEach(link => {
+    historyItem.links = historyItem.links.filter(hi => hi.text != articleText);
+    historyItem.links.forEach(link => {
       link.innerSearch.links = link.innerSearch.links.filter(hi => hi.text != articleText);
     });
 
     this.storage.set(this.SEARCH_HISTORY_KEY, searchHistory);
   }
 
-  saveHistory(historyItem) {
+  saveHistory(historyItem: SearchHistoryItem) {
     var searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
     searchHistory.push(historyItem);
     this.storage.set(this.SEARCH_HISTORY_KEY, searchHistory);

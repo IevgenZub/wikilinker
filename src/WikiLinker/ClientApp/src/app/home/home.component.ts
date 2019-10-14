@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { faSearch, faUndo, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { SearchParams } from '../search-params';
 import { SearchHistoryService } from '../search-history.service';
+import { SearchHistoryItem } from '../search-history-item';
+import { Article } from '../article';
 
 @Component({
   selector: 'app-home',
@@ -37,7 +39,12 @@ export class HomeComponent implements OnInit {
     this.searchStarted = true;
     this.http.post(this.baseUrl + 'api/articles', searchData).subscribe(
       result => {
-        this.searcHistoryService.saveHistory({ text: searchData.text, result: result });
+        this.searcHistoryService.saveHistory({
+          text: searchData.text,
+          links: (<any>result).links,
+          words: (<any>result).words
+        });
+
         this.router.navigate([`/search-result/${searchData.text}`]);
       },
       error => console.error(error)
