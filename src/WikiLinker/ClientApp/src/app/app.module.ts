@@ -16,6 +16,8 @@ import { SavedArticlesComponent } from './saved-articles/saved-articles.componen
 import { SearchHistoryComponent } from './search-history/search-history.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { ArticleComponent } from './article/article.component';
+import { ArticleService } from './article.service';
+import { SearchHistoryService } from './search-history.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,7 @@ import { ArticleComponent } from './article/article.component';
     ])
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }, ArticleService, SearchHistoryService
   ],
   bootstrap: [AppComponent]
 })

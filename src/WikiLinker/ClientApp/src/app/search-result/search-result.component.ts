@@ -5,6 +5,7 @@ import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { faSave, faTrash, faArrowUp, faArrowDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { SEARCH_HISTORY_KEY, SAVED_ARTICLES_KEY } from '../constants';
 import { Article } from '../article';
+import { SearchHistoryService } from '../search-history.service';
 
 @Component({
   selector: 'app-search-result',
@@ -12,42 +13,21 @@ import { Article } from '../article';
   styleUrls: ['./search-result.component.css']
 })
 export class SearchResultComponent implements OnInit {
-  readonly SEARCH_HISTORY_KEY = SEARCH_HISTORY_KEY;
-  readonly SAVED_ARTICLES_KEY = SAVED_ARTICLES_KEY;
-  faArrowUp = faArrowUp;
-  faArrowDown = faArrowDown;
-  faTrash = faTrash;
-  faSave = faSave;
   faSearch = faSearch;
-  links = [];
   linkTypes = [];
-  words = [];
+  links = [];
   wordTypes = [];
-  searchHistory = [];
-  savedArticles: Article [] = [];
+  words = [];
   wikiLinkedArticle: any;
   searchPhrase: string;
 
   constructor(
-    @Inject(LOCAL_STORAGE)
-    private storage: StorageService,
+    private searchHistoryService: SearchHistoryService,
     private route: ActivatedRoute) { }
 
   ngOnInit() {
-    if (!this.storage.has(this.SEARCH_HISTORY_KEY)) {
-      this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);
-    } else {
-      this.searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
-    }
-
-    if (!this.storage.has(this.SAVED_ARTICLES_KEY)) {
-      this.storage.set(this.SAVED_ARTICLES_KEY, this.savedArticles);
-    } else {
-      this.savedArticles = this.storage.get(this.SAVED_ARTICLES_KEY);
-    }
-
     this.route.params.pipe(map(p => p.text)).subscribe(result => {
-      var match = this.searchHistory.filter(sh => sh.text == result);
+      var match = this.searchHistoryService.getSearchHistory().filter(sh => sh.text == result);
       if (match.length == 1) {
         this.searchPhrase = result;
         this.showResult(match[0].result, match[0].text);
@@ -55,33 +35,15 @@ export class SearchResultComponent implements OnInit {
     })
   }
 
-
-
-  removeFromHistoryElements(text) {
-    this.searchHistory.forEach(sh => {
-      sh.result.links = sh.result.links.filter(l => l.text != text);
-      sh.result.links.forEach(li => {
-        if (li.innerSearch) {
-          li.innerSearch.links = li.innerSearch.links.filter(inner => inner.text != text);
-        }
-      })
-    });
-
-    this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);
-
-    let historyItem = this.searchHistory.filter(sh => sh.text == this.searchPhrase)[0];
-    this.showResult(historyItem.result, historyItem.text);
-  }
-
   private showResult(result, text) {
     this.wordTypes = [];
     this.linkTypes = [];
-    this.words = (<any>result).words;
-    for (let word of this.words) {
-      word.sort = this.words.indexOf(word);
+    let words = (<any>result).words;
+    for (let word of words) {
+      word.sort = words.indexOf(word);
       let typeName = word.type;
       if (this.wordTypes.filter(w => w.name == typeName).length == 0) {
-        this.wordTypes.push({ name: typeName, words: this.words.filter(w => w.type == typeName) });
+        this.wordTypes.push({ name: typeName, words: words.filter(w => w.type == typeName) });
       }
     }
 
@@ -93,14 +55,14 @@ export class SearchResultComponent implements OnInit {
       let typeName = link.type;
       let cssClass = this.getLinkStyle(typeName);
       if (this.linkTypes.filter(l => l.name == typeName).length == 0) {
-        var links = this.links.filter(l =>
+        var matchingLinks = this.links.filter(l =>
           l.type == typeName &&
           l.description.length > 0 &&
           !l.description.includes("may refer to:") &&
           !l.description.includes("commonly refers to:"));
 
-        if (links.length > 0) {
-          this.linkTypes.push({ name: typeName, links: links });
+        if (matchingLinks.length > 0) {
+          this.linkTypes.push({ name: typeName, links: matchingLinks });
         }
       }
 

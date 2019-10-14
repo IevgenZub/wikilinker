@@ -5,4 +5,5 @@ export class Article {
   imageUrl: string;
   linkedDescription: string;
   type: string;
+  saved: boolean = false;
 }

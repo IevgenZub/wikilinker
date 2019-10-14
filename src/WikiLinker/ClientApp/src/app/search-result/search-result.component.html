@@ -31,15 +31,6 @@
       <div class="col-12" *ngFor="let link of type.links">
         <!--Article-->
         <app-article [article]="link"></app-article>
-        <div class="row" *ngFor="let innerType of link.innerLinkTypes">
-          <div class="col-12 top-buffer">
-            <p>{{ innerType.name }}</p>
-          </div>
-          <div class="col-12 col-md-6" *ngFor="let innerLink of innerType.links">
-            <!--Child articles-->
-            <app-article [article]="innerLink" [miniSize]="true"></app-article>
-          </div>
-        </div>
         <div class="row">
           <div class="col-12">
             <hr />

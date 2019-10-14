@@ -3,54 +3,42 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { faSearch, faUndo, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
-import { SEARCH_HISTORY_KEY, SAVED_ARTICLES_KEY } from '../constants';
+import { SearchParams } from '../search-params';
+import { SearchHistoryService } from '../search-history.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  readonly SEARCH_HISTORY_KEY = SEARCH_HISTORY_KEY;
-  readonly SAVED_ARTICLES_KEY = SAVED_ARTICLES_KEY;
-  faTrash = faTrash;
   faUndo = faUndo;
   faSearch = faSearch;
   searchStarted = false;
-  searchHistory = [];
-  article = <Article> {};
-  articleForm = this.formBuilder.group({
-    text: new FormControl(this.article.text, [Validators.required, Validators.minLength(3)]),
-    recursiveSearch: new FormControl(this.article.recursiveSearch)
+  searchParams = <SearchParams> {};
+  searchForm = this.formBuilder.group({
+    text: new FormControl(this.searchParams.text, [Validators.required, Validators.minLength(3)]),
+    recursiveSearch: new FormControl(this.searchParams.recursiveSearch)
   });
 
   constructor(
-    @Inject(LOCAL_STORAGE)
-    private storage: StorageService,
     private formBuilder: FormBuilder,
     private http: HttpClient,
     @Inject('BASE_URL')
     private baseUrl: string,
-    private router: Router) {
+    private router: Router,
+    private searcHistoryService: SearchHistoryService) {
   }
 
-  ngOnInit(): void {
-    if (!this.storage.has(this.SEARCH_HISTORY_KEY)) {
-      this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);
-    } else {
-      this.searchHistory = this.storage.get(this.SEARCH_HISTORY_KEY);
-    }
-
-    this.articleForm.controls['recursiveSearch'].setValue(false);
+  ngOnInit(): void {    
+    this.searchForm.controls['recursiveSearch'].setValue(false);
   }
 
-  onSubmit(articleData) {
+  onSubmit(searchData) {
     this.searchStarted = true;
-    this.http.post(this.baseUrl + 'api/articles', articleData).subscribe(
+    this.http.post(this.baseUrl + 'api/articles', searchData).subscribe(
       result => {
-        this.searchHistory.push({ text: articleData.text, result: result });
-        this.storage.set(this.SEARCH_HISTORY_KEY, this.searchHistory);
-        this.router.navigate([`/search-result/${articleData.text}`]);
+        this.searcHistoryService.saveHistory({ text: searchData.text, result: result });
+        this.router.navigate([`/search-result/${searchData.text}`]);
       },
       error => console.error(error)
     );
@@ -58,13 +46,9 @@ export class HomeComponent implements OnInit {
 
   reset() {
     if (!this.searchStarted) {
-      this.articleForm.reset();
-      this.articleForm.controls['recursiveSearch'].setValue(false);
+      this.searchForm.reset();
+      this.searchForm.controls['recursiveSearch'].setValue(false);
     }
   }
 }
 
-interface Article {
-  text: string;
-  recursiveSearch: boolean;
-}

@@ -34,12 +34,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\app\article.ts" />
     <None Remove="ClientApp\src\app\constants.ts" />
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\app\article.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\constants.ts" />
   </ItemGroup>
 

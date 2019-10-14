@@ -6,7 +6,7 @@
 </div>
 <div class="row">
   <div class="col-12">
-    <form [formGroup]="articleForm" (ngSubmit)="onSubmit(articleForm.value)">
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit(searchForm.value)">
       <div class="form-group">
         <textarea id="description" rows="2" formControlName="text" class="form-control"
                   placeholder="Enter the text you want to search in Wiki...">
@@ -21,7 +21,7 @@
           <fa-icon [icon]="faUndo"></fa-icon>
         </button>
         &nbsp;
-        <button id="button-submit" type="submit" [disabled]="!articleForm.valid" class="btn btn-primary">
+        <button id="button-submit" type="submit" [disabled]="!searchForm.valid" class="btn btn-primary">
           <fa-icon [icon]="faSearch"></fa-icon>
         </button>
       </div>
