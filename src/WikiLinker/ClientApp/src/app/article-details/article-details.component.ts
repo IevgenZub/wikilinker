@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../article.service';
 import { Article } from '../article';
 import { map } from 'rxjs/operators';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-article-details',
@@ -11,6 +12,7 @@ import { map } from 'rxjs/operators';
 })
 export class ArticleDetailsComponent implements OnInit {
   article: Article;
+  faTrash = faTrash;
 
   constructor(
     private route: ActivatedRoute,
