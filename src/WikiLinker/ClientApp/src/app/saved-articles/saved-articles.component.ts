@@ -28,11 +28,11 @@ export class SavedArticlesComponent implements OnInit {
     this.savedArticles = this.articleService.getSavedArticles();
     this.articleTypes = [];
     for (let article of this.savedArticles) {
-      let typeName = article.type;
-      if (this.articleTypes.filter(l => l.name == typeName).length == 0) {
-        var articles = this.savedArticles.filter(a => a.type == typeName);
+      let type = article.type;
+      if (this.articleTypes.filter(l => l.name == type).length == 0) {
+        var articles = this.savedArticles.filter(a => a.type == type);
         if (articles.length > 0) {
-          this.articleTypes.push({ name: typeName, articles: articles });
+          this.articleTypes.push({ name: type, articles: articles });
         }
       }
     }

@@ -20,6 +20,7 @@ import { ArticleService } from './article.service';
 import { SearchHistoryService } from './search-history.service';
 import { SearchHistoryItemComponent } from './search-history-item/search-history-item.component';
 import { ArticleDetailsComponent } from './article-details/article-details.component';
+import { SearchedArticlesComponent } from './searched-articles/searched-articles.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ArticleDetailsComponent } from './article-details/article-details.compo
     SearchResultComponent,
     ArticleComponent,
     SearchHistoryItemComponent,
-    ArticleDetailsComponent
+    ArticleDetailsComponent,
+    SearchedArticlesComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -44,6 +46,7 @@ import { ArticleDetailsComponent } from './article-details/article-details.compo
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'saved-articles', component: SavedArticlesComponent },
+      { path: 'searched-articles', component: SearchedArticlesComponent },
       { path: 'search-result/:text', component: SearchResultComponent },
       { path: 'article-details/:text', component: ArticleDetailsComponent },
       { path: 'search-history', component: SearchHistoryComponent}
