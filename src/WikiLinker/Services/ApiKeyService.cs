@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace WikiLinker.Services
 {
-    public class ApiKeyServiceClientCredentials : ServiceClientCredentials
+    public class ApiKeyService : ServiceClientCredentials
     {
         private readonly string apiKey;
 
-        public ApiKeyServiceClientCredentials(string apiKey)
+        public ApiKeyService(string apiKey)
         {
             this.apiKey = apiKey;
         }

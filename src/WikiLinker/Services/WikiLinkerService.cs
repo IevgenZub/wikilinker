@@ -17,7 +17,7 @@ namespace WikiLinker.Services
         private const string PlaceholderImage = "https://news-cdn.softpedia.com/images/news2/Wikipedia-Rolls-Out-Support-for-Encrypted-HTTPS-Connections-2.jpg";
 
         private readonly TextAnalyticsClient _client = new TextAnalyticsClient(
-            new ApiKeyServiceClientCredentials(AzureTextAnalyticsKey)) { Endpoint = AzureTextAnalyticsEndpoint };
+            new ApiKeyService(AzureTextAnalyticsKey)) { Endpoint = AzureTextAnalyticsEndpoint };
 
         public async Task<string> FindLinksAndImages(string input, bool recursiveSearch, int recursionLevel = 0)
         {
